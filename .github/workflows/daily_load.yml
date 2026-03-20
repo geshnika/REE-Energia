@@ -25,10 +25,11 @@ jobs:
 
       - name: Install ODBC Driver
         run: |
-          curl -fsSL https://packages.microsoft.com/keys/microsoft.asc | sudo gpg --batch --dearmor -o /usr/share/keyrings/microsoft-prod.gpg
-          curl https://packages.microsoft.com/config/ubuntu/22.04/prod.list | sudo tee /etc/apt/sources.list.d/mssql-release.list
           sudo apt-get update
-          sudo ACCEPT_EULA=Y apt-get install -y msodbcsql17
+          sudo apt-get install -y unixodbc-dev
+          pip install pyodbc
+          wget -q https://packages.microsoft.com/ubuntu/22.04/prod/pool/main/m/msodbcsql17/msodbcsql17_17.10.6.1-1_amd64.deb
+          sudo ACCEPT_EULA=Y dpkg -i msodbcsql17_17.10.6.1-1_amd64.deb || sudo apt-get install -f -y
         env:
           DEBIAN_FRONTEND: noninteractive
 
