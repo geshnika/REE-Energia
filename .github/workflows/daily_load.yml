@@ -34,7 +34,7 @@ jobs:
           DEBIAN_FRONTEND: noninteractive
 
       - name: Run daily load
-        run: python python/REE_Daily.py
+        run: python Python/REE_Daily.py
         env:
           DB_SERVER:   ${{ secrets.DB_SERVER }}
           DB_NAME:     ${{ secrets.DB_NAME }}
