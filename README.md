@@ -100,11 +100,13 @@ Full load takes approximately 15 minutes and inserts ~330,000 rows.
 
 | Table | Rows | From | To |
 |---|---|---|---|
-| Generacion | 54,130 | 2014-01-01 | present |
-| Demanda | 4,462 | 2014-01-01 | present |
-| Emisiones | 49,668 | 2014-01-01 | present |
-| Precios | 181,273 | 2014-01-01 | present |
-| Intercambios | 43,537 | 2014-01-01 | present |
+| `Generacion` | 54,143 | 2014-01-01 | 2026-03-21 |
+| `Demanda` | 4,463 | 2014-01-01 | 2026-03-21 |
+| `Emisiones` | 49,680 | 2014-01-01 | 2026-03-21 |
+| `Precios` | 181,273 | 2014-01-01 | 2026-03-21 |
+| `Intercambios` | 43,547 | 2014-01-01 | 2026-03-21 |
+
+_Last updated: 2026-03-21 11:07 UTC_
 
 ---
 
