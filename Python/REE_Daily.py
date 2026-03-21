@@ -20,10 +20,10 @@ DB_USER     = os.getenv("DB_USER")
 DB_PASSWORD = os.getenv("DB_PASSWORD")
 
 variables = {
-    "DB_SERVER"  : DB_SERVER,
-    "DB_NAME"    : DB_NAME,
-    "DB_USER"    : DB_USER,
-    "DB_PASSWORD": DB_PASSWORD
+    "DB_SERVER"   : DB_SERVER,
+    "DB_NAME"     : DB_NAME,
+    "DB_USER"     : DB_USER,
+    "DB_PASSWORD" : DB_PASSWORD
 }
 
 faltantes = [k for k, v in variables.items() if not v]
@@ -51,7 +51,7 @@ print(f"Rango: {ayer} → {hoy}")
 # 3 — Funciones auxiliares
 
 def verificar_api(url, params):
-    """Verifica que el endpoint responde correctamente."""
+    """ Verifica que el endpoint responde correctamente """
     response = requests.get(url, headers = {"Accept": "application/json"}, params = params)
     if response.status_code != 200:
         raise ConnectionError(f"API respondió con status {response.status_code}")
@@ -112,11 +112,11 @@ print("=" * 60)
 start_tabla = time.time()
 url         = "https://apidatos.ree.es/es/datos/generacion/estructura-generacion"
 params      = {
-    "start_date": start_str,
-    "end_date"  : end_str,
-    "time_trunc": "day",
-    "geo_limit" : "peninsular",
-    "geo_ids"   : "8741"
+    "start_date" : start_str,
+    "end_date"   : end_str,
+    "time_trunc" : "day",
+    "geo_limit"  : "peninsular",
+    "geo_ids"    : "8741"
 }
 
 datos     = verificar_api(url, params).get("included", [])
@@ -126,19 +126,19 @@ for fuente in datos:
     tipo = fuente["attributes"]["title"]
     for punto in fuente["attributes"]["values"]:
         registros.append({
-            "Fecha"     : punto["datetime"][:10],
-            "Fuente"    : tipo,
-            "Valor_mwh" : punto["value"],
-            "Porcentaje": punto["percentage"]
+            "Fecha"      : punto["datetime"][:10],
+            "Fuente"     : tipo,
+            "Valor_mwh"  : punto["value"],
+            "Porcentaje" : punto["percentage"]
         })
 
 df          = pd.DataFrame(registros)
 df["Fecha"] = pd.to_datetime(df["Fecha"]).dt.date
 
 elapsed = merge_tabla(
-    df      = df,
-    tabla   = "Generacion",
-    claves  = ["Fecha", "Fuente"],
+    df       = df,
+    tabla    = "Generacion",
+    claves   = ["Fecha", "Fuente"],
     columnas = ["Valor_mwh", "Porcentaje"]
 )
 
@@ -153,11 +153,11 @@ print("=" * 60)
 start_tabla = time.time()
 url         = "https://apidatos.ree.es/es/datos/demanda/evolucion"
 params      = {
-    "start_date": start_str,
-    "end_date"  : end_str,
-    "time_trunc": "day",
-    "geo_limit" : "peninsular",
-    "geo_ids"   : "8741"
+    "start_date" : start_str,
+    "end_date"   : end_str,
+    "time_trunc" : "day",
+    "geo_limit"  : "peninsular",
+    "geo_ids"    : "8741"
 }
 
 datos     = verificar_api(url, params).get("included", [])
@@ -167,9 +167,9 @@ for item in datos:
     tipo = item["attributes"]["title"]
     for punto in item["attributes"]["values"]:
         registros.append({
-            "Fecha"    : punto["datetime"][:10],
-            "Tipo"     : tipo,
-            "Valor_mwh": punto["value"]
+            "Fecha"     : punto["datetime"][:10],
+            "Tipo"      : tipo,
+            "Valor_mwh" : punto["value"]
         })
 
 df          = pd.DataFrame(registros)
@@ -192,11 +192,11 @@ print("=" * 60)
 
 url    = "https://apidatos.ree.es/es/datos/generacion/estructura-generacion-emisiones-asociadas"
 params = {
-    "start_date": start_str,
-    "end_date"  : end_str,
-    "time_trunc": "day",
-    "geo_limit" : "peninsular",
-    "geo_ids"   : "8741"
+    "start_date" : start_str,
+    "end_date"   : end_str,
+    "time_trunc" : "day",
+    "geo_limit"  : "peninsular",
+    "geo_ids"    : "8741"
 }
 
 datos     = verificar_api(url, params).get("included", [])
@@ -206,9 +206,9 @@ for item in datos:
     tipo = item["attributes"]["title"]
     for punto in item["attributes"]["values"]:
         registros.append({
-            "Fecha": punto["datetime"][:10],
-            "Tipo" : tipo,
-            "Valor": punto["value"]
+            "Fecha" : punto["datetime"][:10],
+            "Tipo"  : tipo,
+            "Valor" : punto["value"]
         })
 
 df          = pd.DataFrame(registros)
@@ -231,9 +231,9 @@ print("=" * 60)
 
 url    = "https://apidatos.ree.es/es/datos/mercados/precios-mercados-tiempo-real"
 params = {
-    "start_date": start_str,
-    "end_date"  : end_str,
-    "time_trunc": "hour"
+    "start_date" : start_str,
+    "end_date"   : end_str,
+    "time_trunc" : "hour"
 }
 
 datos     = verificar_api(url, params).get("included", [])
@@ -245,11 +245,11 @@ for item in datos:
         dt   = punto["datetime"]
         zona = dt[23:29]
         registros.append({
-            "Fecha"        : dt[:10],
-            "Hora"         : dt[11:19],
-            "Zona"         : zona,
-            "Tipo"         : tipo,
-            "Valor_eur_mwh": punto["value"]
+            "Fecha"         : dt[:10],
+            "Hora"          : dt[11:19],
+            "Zona"          : zona,
+            "Tipo"          : tipo,
+            "Valor_eur_mwh" : punto["value"]
         })
 
 df          = pd.DataFrame(registros)
@@ -273,11 +273,11 @@ print("=" * 60)
 
 url    = "https://apidatos.ree.es/es/datos/intercambios/todas-fronteras-programados"
 params = {
-    "start_date": start_str,
-    "end_date"  : end_str,
-    "time_trunc": "day",
-    "geo_limit" : "peninsular",
-    "geo_ids"   : "8741"
+    "start_date" : start_str,
+    "end_date"   : end_str,
+    "time_trunc" : "day",
+    "geo_limit"  : "peninsular",
+    "geo_ids"    : "8741"
 }
 
 datos     = verificar_api(url, params).get("included", [])
@@ -290,10 +290,10 @@ for pais_item in datos:
         tipo = flujo["attributes"]["title"]
         for punto in flujo["attributes"]["values"]:
             registros.append({
-                "Fecha"    : punto["datetime"][:10],
-                "Pais"     : pais,
-                "Tipo"     : tipo,
-                "Valor_mwh": punto["value"]
+                "Fecha"     : punto["datetime"][:10],
+                "Pais"      : pais,
+                "Tipo"      : tipo,
+                "Valor_mwh" : punto["value"]
             })
 
 df          = pd.DataFrame(registros)
@@ -319,14 +319,14 @@ start = time.time()
 with engine.connect() as conn:
     resultado  = conn.execute(text("""
         SELECT
-             'Generacion'    AS Tabla
-            ,COUNT(*)        AS Filas
-            ,MIN(Fecha)      AS Desde
-            ,MAX(Fecha)      AS Hasta
+            'Generacion' AS Tabla
+            ,COUNT(*) AS Filas
+            ,MIN(Fecha) AS Desde
+            ,MAX(Fecha) AS Hasta
         FROM Generacion
-        UNION ALL SELECT 'Demanda',      COUNT(*), MIN(Fecha), MAX(Fecha) FROM Demanda
-        UNION ALL SELECT 'Emisiones',    COUNT(*), MIN(Fecha), MAX(Fecha) FROM Emisiones
-        UNION ALL SELECT 'Precios',      COUNT(*), MIN(Fecha), MAX(Fecha) FROM Precios
+        UNION ALL SELECT 'Demanda', COUNT(*), MIN(Fecha), MAX(Fecha) FROM Demanda
+        UNION ALL SELECT 'Emisiones', COUNT(*), MIN(Fecha), MAX(Fecha) FROM Emisiones
+        UNION ALL SELECT 'Precios', COUNT(*), MIN(Fecha), MAX(Fecha) FROM Precios
         UNION ALL SELECT 'Intercambios', COUNT(*), MIN(Fecha), MAX(Fecha) FROM Intercambios
     """))
     df_resumen = pd.DataFrame(resultado.fetchall(), columns = ["Tabla", "Filas", "Desde", "Hasta"])
