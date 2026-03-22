@@ -30,17 +30,29 @@ faltantes = [k for k, v in variables.items() if not v]
 if faltantes:
     raise ValueError(f"Variables de entorno faltantes: {faltantes}")
 
-start  = time.time()
-engine = create_engine(
-    f"mssql+pyodbc://{DB_USER}:{DB_PASSWORD}@{DB_SERVER}/{DB_NAME}"
-    "?driver=ODBC+Driver+17+for+SQL+Server",
-    connect_args = {
-        "timeout": 120
-    }
-)
+def crear_engine():
+    return create_engine(
+        f"mssql+pyodbc://{DB_USER}:{DB_PASSWORD}@{DB_SERVER}/{DB_NAME}"
+        "?driver=ODBC+Driver+17+for+SQL+Server",
+        connect_args = {"timeout": 120}
+    )
 
-with engine.connect() as conn:
-    print(f"Conexión exitosa | Tiempo: {round(time.time() - start, 2)}s")
+# Reintentar hasta 3 veces con 30 segundos entre intentos
+for intento in range(3):
+    try:
+        start  = time.time()
+        engine = crear_engine()
+        with engine.connect() as conn:
+            elapsed = round(time.time() - start, 2)
+            print(f"Conexión exitosa | Intento {intento + 1} | Tiempo: {elapsed}s")
+        break
+    except Exception as e:
+        print(f"Intento {intento + 1} fallido: {e}")
+        if intento < 2:
+            print("Reintentando en 30 segundos...")
+            time.sleep(30)
+        else:
+            raise
 
 # ── Rango de fechas ───────────────────────────────────────────
 hoy  = datetime.now().date()
@@ -61,7 +73,6 @@ def verificar_api(url, params):
     if not response.text.strip():
         raise ValueError("API respondió con cuerpo vacío")
     return response.json()
-
 
 def merge_tabla(df, tabla, claves, columnas):
     """
