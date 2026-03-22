@@ -2,7 +2,7 @@ name: Daily REE Load
 
 on:
   schedule:
-    - cron: '0 6 * * *'    # Cada día a las 04:00 UTC (06:00 Madrid)
+    - cron: '1 2 * * *'    # Cada día a las 10:00 UTC (12:00 Madrid)
   workflow_dispatch:       # Permite ejecutarlo manualmente desde GitHub
 
 jobs:
