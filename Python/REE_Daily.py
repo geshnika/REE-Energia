@@ -33,7 +33,10 @@ if faltantes:
 start  = time.time()
 engine = create_engine(
     f"mssql+pyodbc://{DB_USER}:{DB_PASSWORD}@{DB_SERVER}/{DB_NAME}"
-    "?driver=ODBC+Driver+17+for+SQL+Server"
+    "?driver=ODBC+Driver+17+for+SQL+Server",
+    connect_args = {
+        "timeout": 120
+    }
 )
 
 with engine.connect() as conn:
