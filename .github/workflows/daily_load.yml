@@ -2,7 +2,7 @@ name: Daily REE Load
 
 on:
   schedule:
-    - cron: '40 10 * * *'    # Cada día a las 10:20 UTC (12:20 Madrid)
+    - cron: '20 11 * * *'    # Cada día a las 11:20 UTC (13:20 Madrid)
   workflow_dispatch:       # Permite ejecutarlo manualmente desde GitHub
 
 jobs:
@@ -34,7 +34,12 @@ jobs:
           DEBIAN_FRONTEND: noninteractive
 
       - name: Run daily load
-        run: python Python/REE_Daily.py
+        run: |
+          for i in 1 2 3; do
+            python Python/REE_Daily.py && break
+            echo "Intento $i fallido, reintentando en 30s..."
+            sleep 30
+          done
         env:
           DB_SERVER:   ${{ secrets.DB_SERVER }}
           DB_NAME:     ${{ secrets.DB_NAME }}
