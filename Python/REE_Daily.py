@@ -34,7 +34,7 @@ def crear_engine():
     return create_engine(
         f"mssql+pyodbc://{DB_USER}:{DB_PASSWORD}@{DB_SERVER}/{DB_NAME}"
         "?driver=ODBC+Driver+17+for+SQL+Server",
-        connect_args = {"timeout": 120}
+        connect_args = {"timeout": 180}
     )
 
 # Reintentar hasta 3 veces con 30 segundos entre intentos
