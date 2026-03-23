@@ -114,7 +114,7 @@ _Last updated: 2026-03-23 07:08 UTC_
 
 - [x] Historical data load
 - [x] Audit tracking via SQL triggers
-- [ ] Automated daily updates via GitHub Actions
+- [x] Automated daily updates via GitHub Actions
 - [ ] Power BI dashboard
 
 ---
