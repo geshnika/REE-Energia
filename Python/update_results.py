@@ -155,27 +155,27 @@ for _, row in df.sort_values("Año", ascending = False).iterrows():
     )
 
 # ── Construir RESULTS.md ──────────────────────────────────────
-contenido = f"""# Resultados — Sistema Eléctrico Español
+contenido = f"""# Results — Spanish Electrical System
 
-_Última actualización: {datetime.utcnow().strftime('%Y-%m-%d %H:%M')} UTC_
-
----
-
-## General
-
-España produce un promedio de **{promedio_anual:.0f} millones** de MWh al año y demanda, desde 2022, el **{pct_demanda_2022:.1f}%** de esa producción.
-
-La generación de energía renovable aumenta de manera sostenida desde 2014, yendo del **{pct_renovable_ini:.1f}%** al **{pct_renovable_act:.1f}%**. A día de hoy las energías renovables son la principal fuente de generación de energía en el país, reemplazando la **{fuente_top_2014}** por la **{fuente_top_act}**.
+_Last updated: {datetime.utcnow().strftime('%Y-%m-%d %H:%M')} UTC_
 
 ---
 
-## Detalle anual
+## Overview
+
+Spain produces an average of **{promedio_anual:.0f} million** MWh per year and has demanded, since 2022, **{pct_demanda_2022:.1f}%** of that production.
+
+Renewable energy generation has grown steadily since 2014, rising from **{pct_renovable_ini:.1f}%** to **{pct_renovable_act:.1f}%**. Today, renewables are the leading source of electricity generation in the country, replacing **{fuente_top_2014}** with **{fuente_top_act}**.
+
+---
+
+## Annual Breakdown
 
 {tabla_md}
 
 ---
 
-_Datos extraídos de la API pública de [Red Eléctrica de España (REE)](https://www.ree.es)._
+_Data sourced from the public API of [Red Eléctrica de España (REE)](https://www.ree.es)._
 """
 
 with open("RESULTS.md", "w", encoding = "utf-8") as f:
