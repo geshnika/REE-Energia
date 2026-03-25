@@ -1,6 +1,6 @@
 # Results — Spanish Electrical System
 
-_Last updated: 2026-03-25 10:19 UTC_
+_Last updated: 2026-03-25 11:01 UTC_
 
 ---
 
@@ -8,7 +8,9 @@ _Last updated: 2026-03-25 10:19 UTC_
 
 Spain produces an average of **248 million** MWh per year and has demanded, since 2022, **92.9%** of that production.
 
-Renewable energy generation has grown steadily since 2014, rising from **42.8%** to **62.2%**. Today, renewables are the leading source of electricity generation in the country, replacing **Nuclear** with **Eólica**.
+Renewable energy generation has grown steadily since 2014, rising from **42.8%** to **62.2%**.
+
+Today, renewables are the leading source of both generation and consumption in the country. As renewable output grows, so does its share of demand — not because consumption has increased, but because fossil and nuclear sources are being replaced. Renewables now account for **62.2%** of generation and **66.5%** of consumption, having replaced **Nuclear** with **Eólica** as the country's top energy source.
 
 ---
 
