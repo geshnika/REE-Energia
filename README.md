@@ -127,15 +127,15 @@ Full load takes approximately 15 minutes and inserts ~330,000 rows.
 
 ## Data Coverage
 
-| Table | Rows | From | To |
-|---|---|---|---|
-| `Generacion` | 54,209 | 2014-01-01 | 2026-03-26 |
-| `Demanda` | 4,468 | 2014-01-01 | 2026-03-26 |
-| `Emisiones` | 49,741 | 2014-01-01 | 2026-03-26 |
-| `Precios` | 181,873 | 2014-01-01 | 2026-03-26 |
-| `Intercambios` | 43,598 | 2014-01-01 | 2026-03-26 |
+| Table | Rows | Daily Change | From | To |
+|---|---|---|---|---|
+| `Generacion` | 54,209 | 13 | 2014-01-01 | 2026-03-26 |
+| `Demanda` | 4,468 | 1 | 2014-01-01 | 2026-03-26 |
+| `Emisiones` | 49,741 | 12 | 2014-01-01 | 2026-03-26 |
+| `Precios` | 181,873 | 120 | 2014-01-01 | 2026-03-26 |
+| `Intercambios` | 43,598 | 10 | 2014-01-01 | 2026-03-26 |
 
-_Last updated: 2026-03-26 07:07 UTC_
+_Last updated: 2026-03-26 15:00 UTC_
 
 ---
 

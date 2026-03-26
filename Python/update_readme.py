@@ -1,6 +1,6 @@
 import os
 import re
-from datetime import datetime
+from datetime import datetime, timezone
 from sqlalchemy import create_engine, text
 from dotenv import load_dotenv
 
@@ -12,30 +12,31 @@ engine = create_engine(
     "?driver=ODBC+Driver+17+for+SQL+Server"
 )
 
-# ── Consultar Azure SQL ───────────────────────────────────────
+# ── Consulta: resumen de tablas ──────────────────────────────
 with engine.connect() as conn:
     resultado = conn.execute(text("""
         SELECT
-             'Generacion'    AS Tabla
-            ,COUNT(*)        AS Filas
-            ,MIN(Fecha)      AS Desde
-            ,MAX(Fecha)      AS Hasta
+             'Generacion' AS Tabla
+            ,COUNT(*) AS Filas
+            ,SUM(IIF(FechaAlta = CAST(GETDATE() AS DATE), 1, 0)) AS DailyChange
+            ,MIN(Fecha) AS Desde
+            ,MAX(Fecha) AS Hasta
         FROM Generacion
-        UNION ALL SELECT 'Demanda',      COUNT(*), MIN(Fecha), MAX(Fecha) FROM Demanda
-        UNION ALL SELECT 'Emisiones',    COUNT(*), MIN(Fecha), MAX(Fecha) FROM Emisiones
-        UNION ALL SELECT 'Precios',      COUNT(*), MIN(Fecha), MAX(Fecha) FROM Precios
-        UNION ALL SELECT 'Intercambios', COUNT(*), MIN(Fecha), MAX(Fecha) FROM Intercambios
+        UNION ALL SELECT 'Demanda',      COUNT(*), SUM(IIF(FechaAlta = CAST(GETDATE() AS DATE), 1, 0)), MIN(Fecha), MAX(Fecha) FROM Demanda
+        UNION ALL SELECT 'Emisiones',    COUNT(*), SUM(IIF(FechaAlta = CAST(GETDATE() AS DATE), 1, 0)), MIN(Fecha), MAX(Fecha) FROM Emisiones
+        UNION ALL SELECT 'Precios',      COUNT(*), SUM(IIF(FechaAlta = CAST(GETDATE() AS DATE), 1, 0)), MIN(Fecha), MAX(Fecha) FROM Precios
+        UNION ALL SELECT 'Intercambios', COUNT(*), SUM(IIF(FechaAlta = CAST(GETDATE() AS DATE), 1, 0)), MIN(Fecha), MAX(Fecha) FROM Intercambios
     """))
     filas = resultado.fetchall()
 
 # ── Construir tabla markdown ──────────────────────────────────
-tabla_md = "| Table | Rows | From | To |\n"
-tabla_md += "|---|---|---|---|\n"
+tabla_md  = "| Table | Rows | Daily Change | From | To |\n"
+tabla_md += "|---|---|---|---|---|\n"
 
 for row in filas:
-    tabla_md += f"| `{row[0]}` | {row[1]:,} | {row[2]} | {row[3]} |\n"
+    tabla_md += f"| `{row[0]}` | {row[1]:,} | {row[2]:,} | {row[3]} | {row[4]} |\n"
 
-tabla_md += f"\n_Last updated: {datetime.utcnow().strftime('%Y-%m-%d %H:%M')} UTC_"
+tabla_md += f"\n_Last updated: {datetime.now(timezone.utc).strftime('%Y-%m-%d %H:%M')} UTC_"
 
 # ── Reemplazar sección en README ──────────────────────────────
 with open("README.md", "r", encoding = "utf-8") as f:
@@ -52,4 +53,3 @@ with open("README.md", "w", encoding = "utf-8") as f:
     f.write(nuevo_contenido)
 
 print("README actualizado correctamente")
-

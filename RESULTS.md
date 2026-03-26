@@ -1,7 +1,6 @@
 # Results — Spanish Electrical System
 
-<<<<<<< HEAD
-_Last updated: 2026-03-26 14:43 UTC_
+_Last updated: 2026-03-26 14:59 UTC_
 
 ---
 
@@ -19,9 +18,6 @@ _Last updated: 2026-03-26 14:43 UTC_
 | Pricing | What is the price distribution across hourly windows? |
 | Exchanges | Is Spain a net exporter or importer? |
 | Exchanges | Which countries does Spain exchange the most energy with? |
-=======
-_Last updated: 2026-03-26 07:07 UTC_
->>>>>>> 050fbf065a80f04e6f8212a3defaaca4a3f6cc96
 
 ---
 
@@ -37,7 +33,6 @@ Today, renewables are the leading source of both generation and consumption in t
 
 ## Generation — Annual Breakdown
 
-<<<<<<< HEAD
 | Id | Year | RenewableGeneration (MWh) | TotalGeneration (MWh) | PctRenewable | TotalConsumption (MWh) | PctRenewableConsumption | PctConsumption | TopSource | TopSourceMWh | TopRenewable | TopRenewableMWh | TopExporter | TopImporter |
 |---|---|---|---|---|---|---|---|---|---|---|---|---|---|
 | 13 | 2026 | 39,494,874.85 | 63,413,816.95 | 62.28% | 59,263,983.66 | 66.64% | 93.46% | Eólica | 18,211,064.11 | Eólica | 18,211,064.11 | Francia | Francia |
@@ -53,23 +48,6 @@ Today, renewables are the leading source of both generation and consumption in t
 | 3 | 2016 | 100,124,777.06 | 244,965,686.28 | 40.87% | 249,679,889.73 | 40.10% | 101.92% | Nuclear | 56,021,682.06 | Eólica | 47,298,163.67 | Francia | Francia |
 | 2 | 2015 | 93,110,666.00 | 251,055,868.77 | 37.09% | 247,970,027.38 | 37.55% | 98.77% | Nuclear | 54,661,803.31 | Eólica | 47,715,882.14 | Marruecos | Francia |
 | 1 | 2014 | 106,927,994.04 | 249,848,607.90 | 42.80% | 243,174,450.55 | 43.97% | 97.33% | Nuclear | 54,781,281.34 | Eólica | 50,636,662.46 | Marruecos | Francia |
-=======
-| Id | Año | Gen. Renovable (MWh) | Gen. Total (MWh) | % Renovable | Consumo Total (MWh) | % Consumo Renovable | % Gen. Consumida | Top Fuente | Top Renovable |
-|---|---|---|---|---|---|---|---|---|---|
-| 13 | 2026 | 39,494,874.85 | 63,413,816.95 | 62.28% | 59,263,983.66 | 66.64% | 93.46% | Eólica | Eólica |
-| 12 | 2025 | 148,448,356.95 | 257,991,280.00 | 57.54% | 240,341,476.11 | 61.77% | 93.16% | Eólica | Eólica |
-| 11 | 2024 | 146,597,192.04 | 248,642,883.04 | 58.96% | 233,628,202.42 | 62.75% | 93.96% | Eólica | Eólica |
-| 10 | 2023 | 132,811,481.76 | 249,750,271.53 | 53.18% | 231,377,007.54 | 57.40% | 92.64% | Eólica | Eólica |
-| 9 | 2022 | 114,560,554.05 | 258,224,581.69 | 44.36% | 235,500,974.01 | 48.65% | 91.20% | Ciclo combinado | Eólica |
-| 8 | 2021 | 119,524,446.38 | 244,251,971.63 | 48.93% | 242,545,720.26 | 49.28% | 99.30% | Eólica | Eólica |
-| 7 | 2020 | 108,971,235.66 | 236,778,245.60 | 46.02% | 236,755,018.09 | 46.03% | 99.99% | Nuclear | Eólica |
-| 6 | 2019 | 96,180,520.48 | 245,471,015.21 | 39.18% | 249,256,694.23 | 38.59% | 101.54% | Nuclear | Eólica |
-| 5 | 2018 | 99,154,687.17 | 244,901,903.45 | 40.49% | 253,566,420.08 | 39.10% | 103.54% | Nuclear | Eólica |
-| 4 | 2017 | 83,631,423.66 | 245,875,335.37 | 34.01% | 252,506,405.33 | 33.12% | 102.70% | Nuclear | Eólica |
-| 3 | 2016 | 100,124,777.06 | 244,965,686.28 | 40.87% | 249,679,889.73 | 40.10% | 101.92% | Nuclear | Eólica |
-| 2 | 2015 | 93,110,666.00 | 251,055,868.77 | 37.09% | 247,970,027.38 | 37.55% | 98.77% | Nuclear | Eólica |
-| 1 | 2014 | 106,927,994.04 | 249,848,607.90 | 42.80% | 243,174,450.55 | 43.97% | 97.33% | Nuclear | Eólica |
->>>>>>> 050fbf065a80f04e6f8212a3defaaca4a3f6cc96
 
 
 ---
@@ -146,11 +124,7 @@ On an hourly basis, during the current year there are clear price peaks in the *
 
 | Id | Year | PriceType | 00:00-07:59 | 08:00-09:59 | 10:00-13:59 | 14:00-17:59 | 18:00-21:59 | 22:00-23:59 |
 |---|---|---|---|---|---|---|---|---|
-<<<<<<< HEAD
 | 39 | 2026 | MIN | -0.42 | -1.00 | -4.00 | -4.00 | -0.01 | 0.01 |
-=======
-| 39 | 2026 | AVG | 53.17 | 66.47 | 50.72 | 45.35 | 109.11 | 74.13 |
->>>>>>> 050fbf065a80f04e6f8212a3defaaca4a3f6cc96
 | 38 | 2026 | MAX | 217.50 | 240.58 | 242.95 | 199.44 | 398.58 | 245.26 |
 | 37 | 2026 | AVG | 53.17 | 66.47 | 50.72 | 45.35 | 109.11 | 74.13 |
 | 36 | 2025 | MIN | 0.00 | -1.54 | -15.00 | -15.00 | -5.80 | 5.00 |
