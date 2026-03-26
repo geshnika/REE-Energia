@@ -137,6 +137,8 @@ Full load takes approximately 15 minutes and inserts ~330,000 rows.
 
 _Last updated: 2026-03-26 15:00 UTC_
 
+📊 [View full analysis and results](RESULTS.md)
+
 ---
 
 ## Roadmap
