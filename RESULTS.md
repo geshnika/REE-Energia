@@ -1,6 +1,23 @@
 # Results — Spanish Electrical System
 
-_Last updated: 2026-03-25 13:25 UTC_
+_Last updated: 2026-03-26 14:43 UTC_
+
+---
+
+## Scope & Questions
+
+| Area | Question |
+|---|---|
+| Generation | How has the energy mix evolved by source since 2014? |
+| Generation | How much has the share of renewables grown? |
+| Generation | Which source leads generation each year? |
+| Generation | How has total consumption evolved (overall and renewable)? |
+| Generation | What percentage of generation (overall and renewable) is consumed? |
+| Pricing | How have prices evolved historically and seasonally? |
+| Pricing | How did 2022 impact current price levels? |
+| Pricing | What is the price distribution across hourly windows? |
+| Exchanges | Is Spain a net exporter or importer? |
+| Exchanges | Which countries does Spain exchange the most energy with? |
 
 ---
 
@@ -8,29 +25,29 @@ _Last updated: 2026-03-25 13:25 UTC_
 
 Spain produces an average of **248 million** MWh per year and has demanded, since 2022, **92.9%** of that production.
 
-Renewable energy generation has grown steadily since 2014, rising from **42.8%** to **62.2%**.
+Renewable energy generation has grown steadily since 2014, rising from **42.8%** to **62.3%**.
 
-Today, renewables are the leading source of both generation and consumption in the country. As renewable output grows, so does its share of demand — not because consumption has increased, but because fossil and nuclear sources are being replaced. Renewables now account for **62.2%** of generation and **66.5%** of consumption, having replaced **Nuclear** with **Eólica** as the country's top energy source.
+Today, renewables are the leading source of both generation and consumption in the country. As renewable output grows, so does its share of demand — not because consumption has increased, but because fossil and nuclear sources are being replaced. Renewables now account for **62.3%** of generation and **66.6%** of consumption, having replaced **Nuclear** with **Eólica** as the country's top energy source.
 
 ---
 
 ## Generation — Annual Breakdown
 
-| Id | Año | Gen. Renovable (MWh) | Gen. Total (MWh) | % Renovable | Consumo Total (MWh) | % Consumo Renovable | % Gen. Consumida | Top Fuente | Top Renovable |
-|---|---|---|---|---|---|---|---|---|---|
-| 13 | 2026 | 38,966,669.75 | 62,652,752.35 | 62.19% | 58,626,762.96 | 66.47% | 93.57% | Eólica | Eólica |
-| 12 | 2025 | 148,448,356.95 | 257,991,280.00 | 57.54% | 240,341,476.11 | 61.77% | 93.16% | Eólica | Eólica |
-| 11 | 2024 | 146,597,192.04 | 248,642,883.04 | 58.96% | 233,628,202.42 | 62.75% | 93.96% | Eólica | Eólica |
-| 10 | 2023 | 132,811,481.76 | 249,750,271.53 | 53.18% | 231,377,007.54 | 57.40% | 92.64% | Eólica | Eólica |
-| 9 | 2022 | 114,560,554.05 | 258,224,581.69 | 44.36% | 235,500,974.01 | 48.65% | 91.20% | Ciclo combinado | Eólica |
-| 8 | 2021 | 119,524,446.38 | 244,251,971.63 | 48.93% | 242,545,720.26 | 49.28% | 99.30% | Eólica | Eólica |
-| 7 | 2020 | 108,971,235.66 | 236,778,245.60 | 46.02% | 236,755,018.09 | 46.03% | 99.99% | Nuclear | Eólica |
-| 6 | 2019 | 96,180,520.48 | 245,471,015.21 | 39.18% | 249,256,694.23 | 38.59% | 101.54% | Nuclear | Eólica |
-| 5 | 2018 | 99,154,687.17 | 244,901,903.45 | 40.49% | 253,566,420.08 | 39.10% | 103.54% | Nuclear | Eólica |
-| 4 | 2017 | 83,631,423.66 | 245,875,335.37 | 34.01% | 252,506,405.33 | 33.12% | 102.70% | Nuclear | Eólica |
-| 3 | 2016 | 100,124,777.06 | 244,965,686.28 | 40.87% | 249,679,889.73 | 40.10% | 101.92% | Nuclear | Eólica |
-| 2 | 2015 | 93,110,666.00 | 251,055,868.77 | 37.09% | 247,970,027.38 | 37.55% | 98.77% | Nuclear | Eólica |
-| 1 | 2014 | 106,927,994.04 | 249,848,607.90 | 42.80% | 243,174,450.55 | 43.97% | 97.33% | Nuclear | Eólica |
+| Id | Year | RenewableGeneration (MWh) | TotalGeneration (MWh) | PctRenewable | TotalConsumption (MWh) | PctRenewableConsumption | PctConsumption | TopSource | TopSourceMWh | TopRenewable | TopRenewableMWh | TopExporter | TopImporter |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| 13 | 2026 | 39,494,874.85 | 63,413,816.95 | 62.28% | 59,263,983.66 | 66.64% | 93.46% | Eólica | 18,211,064.11 | Eólica | 18,211,064.11 | Francia | Francia |
+| 12 | 2025 | 148,448,356.95 | 257,991,280.00 | 57.54% | 240,341,476.11 | 61.77% | 93.16% | Eólica | 57,411,466.43 | Eólica | 57,411,466.43 | Portugal | Francia |
+| 11 | 2024 | 146,597,192.04 | 248,642,883.04 | 58.96% | 233,628,202.42 | 62.75% | 93.96% | Eólica | 59,503,767.30 | Eólica | 59,503,767.30 | Portugal | Francia |
+| 10 | 2023 | 132,811,481.76 | 249,750,271.53 | 53.18% | 231,377,007.54 | 57.40% | 92.64% | Eólica | 61,343,631.03 | Eólica | 61,343,631.03 | Portugal | Francia |
+| 9 | 2022 | 114,560,554.05 | 258,224,581.69 | 44.36% | 235,500,974.01 | 48.65% | 91.20% | Ciclo combinado | 60,561,797.20 | Eólica | 59,819,921.39 | Francia | Francia |
+| 8 | 2021 | 119,524,446.38 | 244,251,971.63 | 48.93% | 242,545,720.26 | 49.28% | 99.30% | Eólica | 59,204,859.85 | Eólica | 59,204,859.85 | Portugal | Francia |
+| 7 | 2020 | 108,971,235.66 | 236,778,245.60 | 46.02% | 236,755,018.09 | 46.03% | 99.99% | Nuclear | 55,758,359.86 | Eólica | 53,802,056.01 | Portugal | Francia |
+| 6 | 2019 | 96,180,520.48 | 245,471,015.21 | 39.18% | 249,256,694.23 | 38.59% | 101.54% | Nuclear | 55,824,226.77 | Eólica | 53,100,854.50 | Portugal | Francia |
+| 5 | 2018 | 99,154,687.17 | 244,901,903.45 | 40.49% | 253,566,420.08 | 39.10% | 103.54% | Nuclear | 53,197,617.43 | Eólica | 48,955,703.09 | Francia | Francia |
+| 4 | 2017 | 83,631,423.66 | 245,875,335.37 | 34.01% | 252,506,405.33 | 33.12% | 102.70% | Nuclear | 55,539,351.05 | Eólica | 47,508,105.95 | Marruecos | Francia |
+| 3 | 2016 | 100,124,777.06 | 244,965,686.28 | 40.87% | 249,679,889.73 | 40.10% | 101.92% | Nuclear | 56,021,682.06 | Eólica | 47,298,163.67 | Francia | Francia |
+| 2 | 2015 | 93,110,666.00 | 251,055,868.77 | 37.09% | 247,970,027.38 | 37.55% | 98.77% | Nuclear | 54,661,803.31 | Eólica | 47,715,882.14 | Marruecos | Francia |
+| 1 | 2014 | 106,927,994.04 | 249,848,607.90 | 42.80% | 243,174,450.55 | 43.97% | 97.33% | Nuclear | 54,781,281.34 | Eólica | 50,636,662.46 | Marruecos | Francia |
 
 
 ---
@@ -44,7 +61,7 @@ In terms of pricing, the market is evaluated at both micro and macro levels (hou
 - An exceptional drought that severely reduced hydroelectric generation
 - Post-COVID demand recovering at full force
 
-Today, average prices stand at **27.9%** of that peak, though they still represent **151.2%** of what electricity cost in 2014 (excluding wage growth or inflation adjustments).
+Today, average prices stand at **27.7%** of that peak, though they still represent **150.0%** of what electricity cost in 2014 (excluding wage growth or inflation adjustments).
 
 However, while average prices have come down, maximum prices remain historically high — sitting at **66.5%** of their 2022 peak and **437.5%** above 2014 levels, suggesting that price volatility has not returned to pre-crisis norms.
 
@@ -52,9 +69,9 @@ However, while average prices have come down, maximum prices remain historically
 
 ## Pricing — Historical Breakdown
 
-| Id | Año | Tipo | Enero | Febrero | Marzo | Abril | Mayo | Junio | Julio | Agosto | Septiembre | Octubre | Noviembre | Diciembre | Total |
+| Id | Year | PriceType | Jan | Feb | Mar | Apr | May | Jun | Jul | Aug | Sep | Oct | Nov | Dec | Total |
 |---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
-| 39 | 2026 | AVG | 85.06 | 36.59 | 68.72 | — | — | — | — | — | — | — | — | — | 63.46 |
+| 39 | 2026 | AVG | 85.06 | 36.59 | 67.22 | — | — | — | — | — | — | — | — | — | 62.96 |
 | 38 | 2026 | MAX | 317.60 | 357.53 | 398.58 | — | — | — | — | — | — | — | — | — | 357.90 |
 | 37 | 2026 | MIN | -0.50 | -4.00 | -4.00 | — | — | — | — | — | — | — | — | — | -4.00 |
 | 36 | 2025 | AVG | 109.04 | 120.26 | 67.14 | 43.14 | 36.14 | 84.84 | 83.41 | 81.41 | 75.71 | 89.88 | 74.02 | 91.85 | 79.74 |
@@ -99,53 +116,72 @@ However, while average prices have come down, maximum prices remain historically
 
 ## Pricing — Hourly Pattern
 
-On an hourly basis, during the current year there are clear price peaks in the **18:00–21:59** window. At their highest, peak prices reach **199.8%** of valley lows. Even at average levels, the gap remains significant — peak hours average **240.4%** above the cheapest valley window (**14:00–17:59**), reflecting a structural pattern in daily electricity demand.
+On an hourly basis, during the current year there are clear price peaks in the **18:00–21:59** window. At their highest, peak prices reach **199.8%** of valley lows. Even at average levels, the gap remains significant — peak hours average **240.6%** above the cheapest valley window (**14:00–17:59**), reflecting a structural pattern in daily electricity demand.
 
 ---
 
 ## Pricing — Hourly Breakdown
 
-| Id | Año | Tipo | 00:00-07:59 | 08:00-09:59 | 10:00-13:59 | 14:00-17:59 | 18:00-21:59 | 22:00-23:59 |
+| Id | Year | PriceType | 00:00-07:59 | 08:00-09:59 | 10:00-13:59 | 14:00-17:59 | 18:00-21:59 | 22:00-23:59 |
 |---|---|---|---|---|---|---|---|---|
-| 39 | 2026 | AVG | 53.56 | 67.01 | 50.93 | 45.64 | 109.73 | 74.63 |
+| 39 | 2026 | MIN | -0.42 | -1.00 | -4.00 | -4.00 | -0.01 | 0.01 |
 | 38 | 2026 | MAX | 217.50 | 240.58 | 242.95 | 199.44 | 398.58 | 245.26 |
-| 37 | 2026 | MIN | -0.42 | -1.00 | -4.00 | -4.00 | -0.01 | 0.01 |
-| 36 | 2025 | AVG | 81.87 | 86.92 | 54.76 | 47.10 | 115.29 | 105.53 |
+| 37 | 2026 | AVG | 53.17 | 66.47 | 50.72 | 45.35 | 109.11 | 74.13 |
+| 36 | 2025 | MIN | 0.00 | -1.54 | -15.00 | -15.00 | -5.80 | 5.00 |
 | 35 | 2025 | MAX | 236.50 | 423.15 | 268.61 | 272.86 | 372.35 | 243.09 |
-| 34 | 2025 | MIN | 0.00 | -1.54 | -15.00 | -15.00 | -5.80 | 5.00 |
-| 33 | 2024 | AVG | 88.85 | 102.25 | 87.87 | 69.78 | 130.17 | 111.70 |
+| 34 | 2025 | AVG | 81.87 | 86.92 | 54.76 | 47.10 | 115.29 | 105.53 |
+| 33 | 2024 | MIN | 0.00 | -0.62 | -2.00 | -2.00 | -0.82 | 0.00 |
 | 32 | 2024 | MAX | 217.59 | 244.79 | 261.86 | 227.36 | 318.42 | 222.62 |
-| 31 | 2024 | MIN | 0.00 | -0.62 | -2.00 | -2.00 | -0.82 | 0.00 |
-| 30 | 2023 | AVG | 108.11 | 126.28 | 111.58 | 91.10 | 152.96 | 133.40 |
+| 31 | 2024 | AVG | 88.85 | 102.25 | 87.87 | 69.78 | 130.17 | 111.70 |
+| 30 | 2023 | MIN | 0.00 | 0.00 | 0.00 | 0.00 | 0.00 | 0.00 |
 | 29 | 2023 | MAX | 214.93 | 255.21 | 278.03 | 240.88 | 357.20 | 238.85 |
-| 28 | 2023 | MIN | 0.00 | 0.00 | 0.00 | 0.00 | 0.00 | 0.00 |
-| 27 | 2022 | AVG | 219.26 | 241.09 | 221.89 | 193.22 | 267.90 | 244.69 |
+| 28 | 2023 | AVG | 108.11 | 126.28 | 111.58 | 91.10 | 152.96 | 133.40 |
+| 27 | 2022 | MIN | 0.00 | 1.00 | 0.16 | 1.00 | 3.69 | 0.10 |
 | 26 | 2022 | MAX | 744.25 | 816.67 | 799.08 | 768.36 | 954.01 | 822.73 |
-| 25 | 2022 | MIN | 0.00 | 1.00 | 0.16 | 1.00 | 3.69 | 0.10 |
-| 24 | 2021 | AVG | 134.51 | 157.92 | 158.80 | 139.44 | 181.04 | 157.77 |
+| 25 | 2022 | AVG | 219.26 | 241.09 | 221.89 | 193.22 | 267.90 | 244.69 |
+| 24 | 2021 | MIN | 0.16 | 0.16 | 0.16 | 0.01 | 1.95 | 1.95 |
 | 23 | 2021 | MAX | 491.83 | 508.48 | 518.40 | 511.58 | 536.81 | 507.62 |
-| 22 | 2021 | MIN | 0.16 | 0.16 | 0.16 | 0.01 | 1.95 | 1.95 |
-| 21 | 2020 | AVG | 30.29 | 36.30 | 35.02 | 32.82 | 38.95 | 36.47 |
+| 22 | 2021 | AVG | 134.51 | 157.92 | 158.80 | 139.44 | 181.04 | 157.77 |
+| 21 | 2020 | MIN | 1.95 | 2.46 | 2.01 | 1.02 | 3.00 | 9.99 |
 | 20 | 2020 | MAX | 60.00 | 63.30 | 62.25 | 63.97 | 68.90 | 57.93 |
-| 19 | 2020 | MIN | 1.95 | 2.46 | 2.01 | 1.02 | 3.00 | 9.99 |
-| 18 | 2019 | AVG | 43.68 | 50.59 | 50.02 | 46.82 | 51.78 | 49.62 |
+| 19 | 2020 | AVG | 30.29 | 36.30 | 35.02 | 32.82 | 38.95 | 36.47 |
+| 18 | 2019 | MIN | 0.03 | 0.51 | 2.05 | 1.02 | 2.30 | 2.30 |
 | 17 | 2019 | MAX | 71.68 | 72.47 | 72.20 | 71.52 | 74.74 | 71.88 |
-| 16 | 2019 | MIN | 0.03 | 0.51 | 2.05 | 1.02 | 2.30 | 2.30 |
-| 15 | 2018 | AVG | 52.09 | 60.29 | 60.37 | 57.45 | 61.81 | 59.60 |
+| 16 | 2019 | AVG | 43.68 | 50.59 | 50.02 | 46.82 | 51.78 | 49.62 |
+| 15 | 2018 | MIN | 2.06 | 2.30 | 2.30 | 2.30 | 2.31 | 5.09 |
 | 14 | 2018 | MAX | 80.37 | 82.30 | 79.17 | 77.89 | 84.13 | 76.20 |
-| 13 | 2018 | MIN | 2.06 | 2.30 | 2.30 | 2.30 | 2.31 | 5.09 |
-| 12 | 2017 | AVG | 46.80 | 55.21 | 55.36 | 52.29 | 57.37 | 54.44 |
+| 13 | 2018 | AVG | 52.09 | 60.29 | 60.37 | 57.45 | 61.81 | 59.60 |
+| 12 | 2017 | MIN | 5.00 | 9.27 | 7.09 | 2.30 | 8.70 | 12.40 |
 | 11 | 2017 | MAX | 97.70 | 98.61 | 98.61 | 96.69 | 101.99 | 99.18 |
-| 10 | 2017 | MIN | 5.00 | 9.27 | 7.09 | 2.30 | 8.70 | 12.40 |
-| 9 | 2016 | AVG | 34.38 | 42.80 | 42.44 | 39.87 | 44.68 | 41.70 |
+| 10 | 2017 | AVG | 46.80 | 55.21 | 55.36 | 52.29 | 57.37 | 54.44 |
+| 9 | 2016 | MIN | 2.30 | 3.00 | 4.00 | 2.30 | 5.00 | 5.40 |
 | 8 | 2016 | MAX | 71.80 | 74.90 | 73.91 | 73.31 | 75.50 | 69.99 |
-| 7 | 2016 | MIN | 2.30 | 3.00 | 4.00 | 2.30 | 5.00 | 5.40 |
-| 6 | 2015 | AVG | 42.97 | 53.68 | 55.39 | 50.37 | 56.72 | 53.39 |
+| 7 | 2016 | AVG | 34.38 | 42.80 | 42.44 | 39.87 | 44.68 | 41.70 |
+| 6 | 2015 | MIN | 4.00 | 7.04 | 7.00 | 5.00 | 14.59 | 17.11 |
 | 5 | 2015 | MAX | 69.48 | 79.99 | 85.05 | 71.00 | 85.00 | 72.48 |
-| 4 | 2015 | MIN | 4.00 | 7.04 | 7.00 | 5.00 | 14.59 | 17.11 |
-| 3 | 2014 | AVG | 33.76 | 45.20 | 46.71 | 42.48 | 50.09 | 46.81 |
+| 4 | 2015 | AVG | 42.97 | 53.68 | 55.39 | 50.37 | 56.72 | 53.39 |
+| 3 | 2014 | MIN | 0.00 | 0.00 | 0.00 | 0.00 | 0.00 | 0.10 |
 | 2 | 2014 | MAX | 73.21 | 89.99 | 80.10 | 74.00 | 113.92 | 84.60 |
-| 1 | 2014 | MIN | 0.00 | 0.00 | 0.00 | 0.00 | 0.00 | 0.10 |
+| 1 | 2014 | AVG | 33.76 | 45.20 | 46.71 | 42.48 | 50.09 | 46.81 |
+
+
+---
+
+## Cross-border Exchanges
+
+Spain is a **net energy exporter**, with a total net export balance of **24.5 million MWh** since 2014. Its main export destination is **Portugal**, receiving **108.6 million MWh**. France is the exception — Spain is a net importer from France, receiving **146.3 million MWh** more than it exports.
+
+---
+
+## Cross-border Exchanges — Breakdown
+
+| Id | Country | Export (MWh) | Import (MWh) | Balance (MWh) |
+|---|---|---|---|---|
+| 0 | Total | -241,562,272.43 | 217,057,882.23 | -24,504,390.19 |
+| 1 | Portugal | -108,634,418.62 | 67,733,186.98 | -40,901,231.64 |
+| 2 | Marruecos | -38,088,720.85 | 2,995,148.53 | -35,093,572.33 |
+| 3 | Andorra | -3,008,544.87 | 0.00 | -3,008,544.87 |
+| 4 | Francia | -91,830,588.09 | 146,329,546.73 | 54,498,958.64 |
 
 
 ---

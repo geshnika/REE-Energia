@@ -1,7 +1,3 @@
--- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
---														 CTE: Inicio														  --
--- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
-
 WITH 
   GeneracionBase AS ( -- -- -- -- -- -- -- -- -- -- -- -- -- -- CTE GeneracionBase: Identificar fuentes y generación por año <<<
 	SELECT
@@ -75,6 +71,21 @@ WITH
 		,SUM(Valor_Mwh) AS ConsumoTotal
 	FROM Demanda
 	GROUP BY YEAR(Fecha)
+),
+
+  IntercambiosPorPais AS (
+    SELECT
+         YEAR(Fecha) AS Año
+        ,Pais
+        ,ROUND(SUM(IIF(Tipo = 'Exportación', Valor_mwh, 0)), 2) AS Exportacion
+        ,ROUND(SUM(IIF(Tipo = 'Importación', Valor_mwh, 0)), 2) AS Importacion
+        ,ROUND(SUM(IIF(Tipo = 'saldo', Valor_mwh, 0)), 2) AS Saldo
+        ,ROW_NUMBER() OVER (PARTITION BY YEAR(Fecha) ORDER BY SUM(IIF(Tipo = 'Exportación', Valor_mwh, 0)) ASC) AS TopExporter
+        ,ROW_NUMBER() OVER (PARTITION BY YEAR(Fecha) ORDER BY SUM(IIF(Tipo = 'Importación', Valor_mwh, 0)) DESC) AS TopImporter
+    FROM Intercambios
+    GROUP BY
+         YEAR(Fecha)
+        ,Pais
 )
 
 -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
@@ -83,17 +94,21 @@ WITH
 
 SELECT
 	 Gc.Id
-	,Gc.Año
-	,ROUND(Gc.GeneracionRenovable, 2) AS GeneracionRenovable
-	,ROUND(Gc.GeneracionTotal, 2) AS GeneracionTotal
-	,ROUND(PctGeneracionRenovable, 2) AS PctGeneracionRenovable
-	,ROUND(Cc.ConsumoTotal, 2) AS ConsumoTotal
-	,ROUND(100.00 * Gc.GeneracionRenovable / Cc.ConsumoTotal, 2) AS PctConsumoRenovable
-	,ROUND(100.00 * Cc.ConsumoTotal / Gc.GeneracionTotal, 2) AS PctGeneracionConsumida
-	,TipoGeneracion_Top1
-	,ROUND(ValorGeneracion_Top1, 2) AS ValorGeneracion_Top1
-	,TipoRenovable_Top1
-	,ROUND(ValorRenovable_Top1, 2) AS ValorRenovable_Top1
+	,Gc.Año AS [Year]
+	,ROUND(Gc.GeneracionRenovable, 2) AS RenewableGeneration
+	,ROUND(Gc.GeneracionTotal, 2) AS TotalGeneration
+	,ROUND(PctGeneracionRenovable, 2) AS PctRenewable
+	,ROUND(Cc.ConsumoTotal, 2) AS TotalConsumption
+	,ROUND(100.00 * Gc.GeneracionRenovable / Cc.ConsumoTotal, 2) AS PctRenewableConsumption
+	,ROUND(100.00 * Cc.ConsumoTotal / Gc.GeneracionTotal, 2) AS PctConsumption
+	,TipoGeneracion_Top1 AS TopSource
+	,ROUND(ValorGeneracion_Top1, 2) AS TopSourceMWh
+	,TipoRenovable_Top1 AS TopRenewable
+	,ROUND(ValorRenovable_Top1, 2) AS TopRenewableMWh
+    ,Ex.Pais AS TopExporter
+    ,Im.Pais AS TopImporter
 
 FROM GeneracionComparada AS Gc
 LEFT JOIN Consumo AS Cc ON Cc.Año = Gc.Año
+LEFT JOIN IntercambiosPorPais AS Ex ON Ex.Año = Gc.Año AND Ex.TopExporter = 1
+LEFT JOIN IntercambiosPorPais AS Im ON Im.Año = Gc.Año AND Im.TopImporter = 1

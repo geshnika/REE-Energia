@@ -87,23 +87,42 @@ with engine.connect() as conn:
                 ,SUM(Valor_mwh) AS ConsumoTotal
             FROM Demanda
             GROUP BY YEAR(Fecha)
+        ),
+
+          IntercambiosPorPais AS (
+            SELECT
+                 YEAR(Fecha) AS Año
+                ,Pais
+                ,ROUND(SUM(IIF(Tipo = 'Exportación', Valor_mwh, 0)), 2) AS Exportacion
+                ,ROUND(SUM(IIF(Tipo = 'Importación', Valor_mwh, 0)), 2) AS Importacion
+                ,ROUND(SUM(IIF(Tipo = 'saldo', Valor_mwh, 0)), 2) AS Saldo
+                ,ROW_NUMBER() OVER (PARTITION BY YEAR(Fecha) ORDER BY SUM(IIF(Tipo = 'Exportación', Valor_mwh, 0)) ASC) AS TopExporter
+                ,ROW_NUMBER() OVER (PARTITION BY YEAR(Fecha) ORDER BY SUM(IIF(Tipo = 'Importación', Valor_mwh, 0)) DESC) AS TopImporter
+            FROM Intercambios
+            GROUP BY
+                 YEAR(Fecha)
+                ,Pais
         )
 
         SELECT
              Gc.Id
             ,Gc.Año
-            ,ROUND(Gc.GeneracionRenovable, 2) AS GeneracionRenovable
-            ,ROUND(Gc.GeneracionTotal, 2) AS GeneracionTotal
-            ,ROUND(Gc.PctGeneracionRenovable, 2) AS PctGeneracionRenovable
-            ,ROUND(Cc.ConsumoTotal, 2) AS ConsumoTotal
-            ,ROUND(100.00 * Gc.GeneracionRenovable / Cc.ConsumoTotal, 2) AS PctConsumoRenovable
-            ,ROUND(100.00 * Cc.ConsumoTotal / Gc.GeneracionTotal, 2) AS PctGeneracionConsumida
-            ,TipoGeneracion_Top1
-            ,ROUND(ValorGeneracion_Top1, 2) AS ValorGeneracion_Top1
-            ,TipoRenovable_Top1
-            ,ROUND(ValorRenovable_Top1, 2) AS ValorRenovable_Top1
+            ,ROUND(Gc.GeneracionRenovable, 2) AS RenewableGeneration
+            ,ROUND(Gc.GeneracionTotal, 2) AS TotalGeneration
+            ,ROUND(Gc.PctGeneracionRenovable, 2) AS PctRenewable
+            ,ROUND(Cc.ConsumoTotal, 2) AS TotalConsumption
+            ,ROUND(100.00 * Gc.GeneracionRenovable / Cc.ConsumoTotal, 2) AS PctRenewableConsumption
+            ,ROUND(100.00 * Cc.ConsumoTotal / Gc.GeneracionTotal, 2) AS PctConsumption
+            ,TipoGeneracion_Top1 AS TopSource
+            ,ROUND(ValorGeneracion_Top1, 2) AS TopSourceMWh
+            ,TipoRenovable_Top1 AS TopRenewable
+            ,ROUND(ValorRenovable_Top1, 2) AS TopRenewableMWh
+            ,Ex.Pais AS TopExporter
+            ,Im.Pais AS TopImporter
         FROM GeneracionComparada AS Gc
         LEFT JOIN Consumo AS Cc ON Cc.Año = Gc.Año
+        LEFT JOIN IntercambiosPorPais AS Ex ON Ex.Año = Gc.Año AND Ex.TopExporter = 1
+        LEFT JOIN IntercambiosPorPais AS Im ON Im.Año = Gc.Año AND Im.TopImporter = 1
         ORDER BY Gc.Año ASC
     """))
     filas    = resultado.fetchall()
@@ -122,7 +141,7 @@ with engine.connect() as conn:
                 ,CAST(AVG(Valor_eur_mwh) AS DECIMAL(10, 2)) AS AVG_Valor
                 ,CAST(MIN(Valor_eur_mwh) AS DECIMAL(10, 2)) AS MIN_Valor
                 ,CAST(MAX(Valor_eur_mwh) AS DECIMAL(10, 2)) AS MAX_Valor
-            FROM [dbo].[Precios]
+            FROM Precios
             GROUP BY
                  YEAR(Fecha)
                 ,MONTH(Fecha)
@@ -131,23 +150,22 @@ with engine.connect() as conn:
         SELECT
              ROW_NUMBER() OVER (ORDER BY Año ASC, TipoPrecio DESC) AS Id
             ,*
-                                  
         FROM (
             SELECT
                  Año
                 ,'AVG' AS TipoPrecio
-                ,CAST(AVG(IIF(Mes = 1,  AVG_Valor, NULL)) AS DECIMAL(5, 2)) AS Enero
-                ,CAST(AVG(IIF(Mes = 2,  AVG_Valor, NULL)) AS DECIMAL(5, 2)) AS Febrero
-                ,CAST(AVG(IIF(Mes = 3,  AVG_Valor, NULL)) AS DECIMAL(5, 2)) AS Marzo
-                ,CAST(AVG(IIF(Mes = 4,  AVG_Valor, NULL)) AS DECIMAL(5, 2)) AS Abril
-                ,CAST(AVG(IIF(Mes = 5,  AVG_Valor, NULL)) AS DECIMAL(5, 2)) AS Mayo
-                ,CAST(AVG(IIF(Mes = 6,  AVG_Valor, NULL)) AS DECIMAL(5, 2)) AS Junio
-                ,CAST(AVG(IIF(Mes = 7,  AVG_Valor, NULL)) AS DECIMAL(5, 2)) AS Julio
-                ,CAST(AVG(IIF(Mes = 8,  AVG_Valor, NULL)) AS DECIMAL(5, 2)) AS Agosto
-                ,CAST(AVG(IIF(Mes = 9,  AVG_Valor, NULL)) AS DECIMAL(5, 2)) AS Septiembre
-                ,CAST(AVG(IIF(Mes = 10, AVG_Valor, NULL)) AS DECIMAL(5, 2)) AS Octubre
-                ,CAST(AVG(IIF(Mes = 11, AVG_Valor, NULL)) AS DECIMAL(5, 2)) AS Noviembre
-                ,CAST(AVG(IIF(Mes = 12, AVG_Valor, NULL)) AS DECIMAL(5, 2)) AS Diciembre
+                ,CAST(AVG(IIF(Mes = 1,  AVG_Valor, NULL)) AS DECIMAL(5, 2)) AS Jan
+                ,CAST(AVG(IIF(Mes = 2,  AVG_Valor, NULL)) AS DECIMAL(5, 2)) AS Feb
+                ,CAST(AVG(IIF(Mes = 3,  AVG_Valor, NULL)) AS DECIMAL(5, 2)) AS Mar
+                ,CAST(AVG(IIF(Mes = 4,  AVG_Valor, NULL)) AS DECIMAL(5, 2)) AS Apr
+                ,CAST(AVG(IIF(Mes = 5,  AVG_Valor, NULL)) AS DECIMAL(5, 2)) AS May
+                ,CAST(AVG(IIF(Mes = 6,  AVG_Valor, NULL)) AS DECIMAL(5, 2)) AS Jun
+                ,CAST(AVG(IIF(Mes = 7,  AVG_Valor, NULL)) AS DECIMAL(5, 2)) AS Jul
+                ,CAST(AVG(IIF(Mes = 8,  AVG_Valor, NULL)) AS DECIMAL(5, 2)) AS Aug
+                ,CAST(AVG(IIF(Mes = 9,  AVG_Valor, NULL)) AS DECIMAL(5, 2)) AS Sep
+                ,CAST(AVG(IIF(Mes = 10, AVG_Valor, NULL)) AS DECIMAL(5, 2)) AS Oct
+                ,CAST(AVG(IIF(Mes = 11, AVG_Valor, NULL)) AS DECIMAL(5, 2)) AS Nov
+                ,CAST(AVG(IIF(Mes = 12, AVG_Valor, NULL)) AS DECIMAL(5, 2)) AS Dec
                 ,CAST(AVG(AVG_Valor) AS DECIMAL(5, 2)) AS Total
             FROM PreciosDiarios
             GROUP BY Año
@@ -157,18 +175,18 @@ with engine.connect() as conn:
             SELECT
                  Año
                 ,'MAX' AS TipoPrecio
-                ,MAX(IIF(Mes = 1,  MAX_Valor, NULL)) AS Enero
-                ,MAX(IIF(Mes = 2,  MAX_Valor, NULL)) AS Febrero
-                ,MAX(IIF(Mes = 3,  MAX_Valor, NULL)) AS Marzo
-                ,MAX(IIF(Mes = 4,  MAX_Valor, NULL)) AS Abril
-                ,MAX(IIF(Mes = 5,  MAX_Valor, NULL)) AS Mayo
-                ,MAX(IIF(Mes = 6,  MAX_Valor, NULL)) AS Junio
-                ,MAX(IIF(Mes = 7,  MAX_Valor, NULL)) AS Julio
-                ,MAX(IIF(Mes = 8,  MAX_Valor, NULL)) AS Agosto
-                ,MAX(IIF(Mes = 9,  MAX_Valor, NULL)) AS Septiembre
-                ,MAX(IIF(Mes = 10, MAX_Valor, NULL)) AS Octubre
-                ,MAX(IIF(Mes = 11, MAX_Valor, NULL)) AS Noviembre
-                ,MAX(IIF(Mes = 12, MAX_Valor, NULL)) AS Diciembre
+                ,MAX(IIF(Mes = 1,  MAX_Valor, NULL)) AS Jan
+                ,MAX(IIF(Mes = 2,  MAX_Valor, NULL)) AS Feb
+                ,MAX(IIF(Mes = 3,  MAX_Valor, NULL)) AS Mar
+                ,MAX(IIF(Mes = 4,  MAX_Valor, NULL)) AS Apr
+                ,MAX(IIF(Mes = 5,  MAX_Valor, NULL)) AS May
+                ,MAX(IIF(Mes = 6,  MAX_Valor, NULL)) AS Jun
+                ,MAX(IIF(Mes = 7,  MAX_Valor, NULL)) AS Jul
+                ,MAX(IIF(Mes = 8,  MAX_Valor, NULL)) AS Aug
+                ,MAX(IIF(Mes = 9,  MAX_Valor, NULL)) AS Sep
+                ,MAX(IIF(Mes = 10, MAX_Valor, NULL)) AS Oct
+                ,MAX(IIF(Mes = 11, MAX_Valor, NULL)) AS Nov
+                ,MAX(IIF(Mes = 12, MAX_Valor, NULL)) AS Dec
                 ,CAST(AVG(MAX_Valor) AS DECIMAL(5, 2)) AS Total
             FROM PreciosDiarios
             GROUP BY Año
@@ -178,18 +196,18 @@ with engine.connect() as conn:
             SELECT
                  Año
                 ,'MIN' AS TipoPrecio
-                ,MIN(IIF(Mes = 1,  MIN_Valor, NULL)) AS Enero
-                ,MIN(IIF(Mes = 2,  MIN_Valor, NULL)) AS Febrero
-                ,MIN(IIF(Mes = 3,  MIN_Valor, NULL)) AS Marzo
-                ,MIN(IIF(Mes = 4,  MIN_Valor, NULL)) AS Abril
-                ,MIN(IIF(Mes = 5,  MIN_Valor, NULL)) AS Mayo
-                ,MIN(IIF(Mes = 6,  MIN_Valor, NULL)) AS Junio
-                ,MIN(IIF(Mes = 7,  MIN_Valor, NULL)) AS Julio
-                ,MIN(IIF(Mes = 8,  MIN_Valor, NULL)) AS Agosto
-                ,MIN(IIF(Mes = 9,  MIN_Valor, NULL)) AS Septiembre
-                ,MIN(IIF(Mes = 10, MIN_Valor, NULL)) AS Octubre
-                ,MIN(IIF(Mes = 11, MIN_Valor, NULL)) AS Noviembre
-                ,MIN(IIF(Mes = 12, MIN_Valor, NULL)) AS Diciembre
+                ,MIN(IIF(Mes = 1,  MIN_Valor, NULL)) AS Jan
+                ,MIN(IIF(Mes = 2,  MIN_Valor, NULL)) AS Feb
+                ,MIN(IIF(Mes = 3,  MIN_Valor, NULL)) AS Mar
+                ,MIN(IIF(Mes = 4,  MIN_Valor, NULL)) AS Apr
+                ,MIN(IIF(Mes = 5,  MIN_Valor, NULL)) AS May
+                ,MIN(IIF(Mes = 6,  MIN_Valor, NULL)) AS Jun
+                ,MIN(IIF(Mes = 7,  MIN_Valor, NULL)) AS Jul
+                ,MIN(IIF(Mes = 8,  MIN_Valor, NULL)) AS Aug
+                ,MIN(IIF(Mes = 9,  MIN_Valor, NULL)) AS Sep
+                ,MIN(IIF(Mes = 10, MIN_Valor, NULL)) AS Oct
+                ,MIN(IIF(Mes = 11, MIN_Valor, NULL)) AS Nov
+                ,MIN(IIF(Mes = 12, MIN_Valor, NULL)) AS Dec
                 ,CAST(MIN(MIN_Valor) AS DECIMAL(5, 2)) AS Total
             FROM PreciosDiarios
             GROUP BY Año
@@ -205,9 +223,8 @@ df_precios = pd.DataFrame(filas, columns = columnas)
 with engine.connect() as conn:
     resultado = conn.execute(text("""
         SELECT
-             ROW_NUMBER() OVER (ORDER BY Año ASC, TipoPrecio DESC) AS Id
+             ROW_NUMBER() OVER (ORDER BY Año, TipoPrecio ASC) AS Id
             ,*
-                                  
         FROM (
             SELECT
                  YEAR(Fecha) AS Año
@@ -248,14 +265,40 @@ with engine.connect() as conn:
                 ,MIN(IIF(Hora BETWEEN '22:00:00' AND '23:59:00', Valor_eur_mwh, NULL)) AS [22:00 - 23:59]
             FROM Precios
             GROUP BY YEAR(Fecha)
-            ) AS SegmentacionHoraria
-
+            ) AS Tranche
         ORDER BY Id DESC
     """))
     filas    = resultado.fetchall()
     columnas = resultado.keys()
 
 df_tramos = pd.DataFrame(filas, columns = columnas)
+
+# ── Consulta: Intercambios ───────────────────────────────────
+with engine.connect() as conn:
+    resultado = conn.execute(text("""
+        SELECT
+             0 AS Id
+            ,'Total' AS Country
+            ,ROUND(SUM(IIF(Tipo = 'Exportación', Valor_mwh, NULL)), 2) AS Export
+            ,ROUND(SUM(IIF(Tipo = 'Importación', Valor_mwh, NULL)), 2) AS Import
+            ,ROUND(SUM(IIF(Tipo = 'saldo', Valor_mwh, NULL)), 2) AS Balance
+        FROM Intercambios
+
+        UNION ALL
+
+        SELECT
+             ROW_NUMBER() OVER (ORDER BY SUM(IIF(Tipo = 'saldo', Valor_mwh, NULL)) ASC) AS Id
+            ,Pais AS Country
+            ,ROUND(SUM(IIF(Tipo = 'Exportación', Valor_mwh, 0)), 2) AS Export
+            ,ROUND(SUM(IIF(Tipo = 'Importación', Valor_mwh, 0)), 2) AS Import
+            ,ROUND(SUM(IIF(Tipo = 'saldo', Valor_mwh, 0)), 2) AS Balance
+        FROM Intercambios
+        GROUP BY Pais
+    """))
+    filas    = resultado.fetchall()
+    columnas = resultado.keys()
+
+df_intercambios = pd.DataFrame(filas, columns = columnas)
 
 # ── Calcular valores narrativos: Generacion ──────────────────
 anio_actual               = datetime.now().year
@@ -264,13 +307,13 @@ df_actual                 = df_gen[df_gen["Año"] == anio_actual].iloc[0]
 df_2014                   = df_gen[df_gen["Año"] == 2014].iloc[0]
 df_desde_2022             = df_gen[df_gen["Año"] >= 2022]
 
-promedio_anual            = df_historico["GeneracionTotal"].mean() / 1_000_000
-pct_demanda_2022          = df_desde_2022["PctGeneracionConsumida"].mean()
-pct_renovable_ini         = df_2014["PctGeneracionRenovable"]
-pct_renovable_act         = df_actual["PctGeneracionRenovable"]
-pct_consumo_renovable_act = df_actual["PctConsumoRenovable"]
-fuente_top_2014           = df_2014["TipoGeneracion_Top1"]
-fuente_top_act            = df_actual["TipoGeneracion_Top1"]
+promedio_anual            = df_historico["TotalGeneration"].mean() / 1_000_000
+pct_demanda_2022          = df_desde_2022["PctConsumption"].mean()
+pct_renovable_ini         = df_2014["PctRenewable"]
+pct_renovable_act         = df_actual["PctRenewable"]
+pct_consumo_renovable_act = df_actual["PctRenewableConsumption"]
+fuente_top_2014           = df_2014["TopSource"]
+fuente_top_act            = df_actual["TopSource"]
 
 # ── Calcular valores narrativos: Precios históricos ──────────
 df_avg                    = df_precios[df_precios["TipoPrecio"] == "AVG"]
@@ -301,53 +344,66 @@ max_valle                 = df_tramos_max_act["14:00 - 17:59"]
 pct_avg_punta_vs_valle    = round(avg_punta / avg_valle * 100, 1)
 pct_max_punta_vs_valle    = round(max_punta / max_valle * 100, 1)
 
+# ── Calcular valores narrativos: Intercambios ────────────────
+total_balance             = df_intercambios[df_intercambios["Country"] == "Total"]["Balance"].iloc[0]
+top_exporter              = df_intercambios[df_intercambios["Id"] == 1]["Country"].iloc[0]
+top_exporter_mwh          = abs(df_intercambios[df_intercambios["Id"] == 1]["Export"].iloc[0]) / 1_000_000
+top_importer              = df_intercambios[df_intercambios["Country"] == "Francia"]["Country"].iloc[0]
+top_importer_mwh          = df_intercambios[df_intercambios["Country"] == "Francia"]["Import"].iloc[0] / 1_000_000
+balance_mm                = abs(total_balance) / 1_000_000
+
+# ── Función de formato ────────────────────────────────────────
+def fmt(v):
+    return f"{v:.2f}" if pd.notna(v) else "—"
+
 # ── Construir tabla generacion ────────────────────────────────
-tabla_gen  = "| Id | Año | Gen. Renovable (MWh) | Gen. Total (MWh) | % Renovable | Consumo Total (MWh) | % Consumo Renovable | % Gen. Consumida | Top Fuente | Top Renovable |\n"
-tabla_gen += "|---|---|---|---|---|---|---|---|---|---|\n"
+tabla_gen  = "| Id | Year | RenewableGeneration (MWh) | TotalGeneration (MWh) | PctRenewable | TotalConsumption (MWh) | PctRenewableConsumption | PctConsumption | TopSource | TopSourceMWh | TopRenewable | TopRenewableMWh | TopExporter | TopImporter |\n"
+tabla_gen += "|---|---|---|---|---|---|---|---|---|---|---|---|---|---|\n"
 
 for _, row in df_gen.sort_values("Año", ascending = False).iterrows():
     tabla_gen += (
         f"| {int(row['Id'])} "
         f"| {int(row['Año'])} "
-        f"| {row['GeneracionRenovable']:,.2f} "
-        f"| {row['GeneracionTotal']:,.2f} "
-        f"| {row['PctGeneracionRenovable']:.2f}% "
-        f"| {row['ConsumoTotal']:,.2f} "
-        f"| {row['PctConsumoRenovable']:.2f}% "
-        f"| {row['PctGeneracionConsumida']:.2f}% "
-        f"| {row['TipoGeneracion_Top1']} "
-        f"| {row['TipoRenovable_Top1']} |\n"
+        f"| {row['RenewableGeneration']:,.2f} "
+        f"| {row['TotalGeneration']:,.2f} "
+        f"| {row['PctRenewable']:.2f}% "
+        f"| {row['TotalConsumption']:,.2f} "
+        f"| {row['PctRenewableConsumption']:.2f}% "
+        f"| {row['PctConsumption']:.2f}% "
+        f"| {row['TopSource']} "
+        f"| {row['TopSourceMWh']:,.2f} "
+        f"| {row['TopRenewable']} "
+        f"| {row['TopRenewableMWh']:,.2f} "
+        f"| {row['TopExporter']} "
+        f"| {row['TopImporter']} |\n"
     )
 
 # ── Construir tabla precios históricos ───────────────────────
-tabla_precios  = "| Id | Año | Tipo | Enero | Febrero | Marzo | Abril | Mayo | Junio | Julio | Agosto | Septiembre | Octubre | Noviembre | Diciembre | Total |\n"
+tabla_precios  = "| Id | Year | PriceType | Jan | Feb | Mar | Apr | May | Jun | Jul | Aug | Sep | Oct | Nov | Dec | Total |\n"
 tabla_precios += "|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|\n"
 
 for _, row in df_precios.iterrows():
-    def fmt(v):
-        return f"{v:.2f}" if pd.notna(v) else "—"
-
     tabla_precios += (
         f"| {int(row['Id'])} "
         f"| {int(row['Año'])} "
         f"| {row['TipoPrecio']} "
-        f"| {fmt(row['Enero'])} "
-        f"| {fmt(row['Febrero'])} "
-        f"| {fmt(row['Marzo'])} "
-        f"| {fmt(row['Abril'])} "
-        f"| {fmt(row['Mayo'])} "
-        f"| {fmt(row['Junio'])} "
-        f"| {fmt(row['Julio'])} "
-        f"| {fmt(row['Agosto'])} "
-        f"| {fmt(row['Septiembre'])} "
-        f"| {fmt(row['Octubre'])} "
-        f"| {fmt(row['Noviembre'])} "
-        f"| {fmt(row['Diciembre'])} "
+        f"| {fmt(row['Jan'])} "
+        f"| {fmt(row['Feb'])} "
+        f"| {fmt(row['Mar'])} "
+        f"| {fmt(row['Apr'])} "
+        f"| {fmt(row['May'])} "
+        f"| {fmt(row['Jun'])} "
+        f"| {fmt(row['Jul'])} "
+        f"| {fmt(row['Aug'])} "
+        f"| {fmt(row['Sep'])} "
+        f"| {fmt(row['Oct'])} "
+        f"| {fmt(row['Nov'])} "
+        f"| {fmt(row['Dec'])} "
         f"| {fmt(row['Total'])} |\n"
     )
 
 # ── Construir tabla tramos horarios ──────────────────────────
-tabla_tramos  = "| Id | Año | Tipo | 00:00-07:59 | 08:00-09:59 | 10:00-13:59 | 14:00-17:59 | 18:00-21:59 | 22:00-23:59 |\n"
+tabla_tramos  = "| Id | Year | PriceType | 00:00-07:59 | 08:00-09:59 | 10:00-13:59 | 14:00-17:59 | 18:00-21:59 | 22:00-23:59 |\n"
 tabla_tramos += "|---|---|---|---|---|---|---|---|---|\n"
 
 for _, row in df_tramos.iterrows():
@@ -363,10 +419,40 @@ for _, row in df_tramos.iterrows():
         f"| {fmt(row['22:00 - 23:59'])} |\n"
     )
 
+# ── Construir tabla intercambios ──────────────────────────────
+tabla_intercambios  = "| Id | Country | Export (MWh) | Import (MWh) | Balance (MWh) |\n"
+tabla_intercambios += "|---|---|---|---|---|\n"
+
+for _, row in df_intercambios.iterrows():
+    tabla_intercambios += (
+        f"| {int(row['Id'])} "
+        f"| {row['Country']} "
+        f"| {row['Export']:,.2f} "
+        f"| {row['Import']:,.2f} "
+        f"| {row['Balance']:,.2f} |\n"
+    )
+
 # ── Construir RESULTS.md ──────────────────────────────────────
 contenido = f"""# Results — Spanish Electrical System
 
 _Last updated: {datetime.now(timezone.utc).strftime('%Y-%m-%d %H:%M')} UTC_
+
+---
+
+## Scope & Questions
+
+| Area | Question |
+|---|---|
+| Generation | How has the energy mix evolved by source since 2014? |
+| Generation | How much has the share of renewables grown? |
+| Generation | Which source leads generation each year? |
+| Generation | How has total consumption evolved (overall and renewable)? |
+| Generation | What percentage of generation (overall and renewable) is consumed? |
+| Pricing | How have prices evolved historically and seasonally? |
+| Pricing | How did 2022 impact current price levels? |
+| Pricing | What is the price distribution across hourly windows? |
+| Exchanges | Is Spain a net exporter or importer? |
+| Exchanges | Which countries does Spain exchange the most energy with? |
 
 ---
 
@@ -416,6 +502,18 @@ On an hourly basis, during the current year there are clear price peaks in the *
 ## Pricing — Hourly Breakdown
 
 {tabla_tramos}
+
+---
+
+## Cross-border Exchanges
+
+Spain is a **net energy exporter**, with a total net export balance of **{balance_mm:.1f} million MWh** since 2014. Its main export destination is **{top_exporter}**, receiving **{top_exporter_mwh:.1f} million MWh**. France is the exception — Spain is a net importer from France, receiving **{top_importer_mwh:.1f} million MWh** more than it exports.
+
+---
+
+## Cross-border Exchanges — Breakdown
+
+{tabla_intercambios}
 
 ---
 

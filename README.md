@@ -27,6 +27,24 @@ Covers generation, demand, emissions, market prices and cross-border exchanges f
 
 ---
 
+## Analytical Framework
+
+### Generation
+- How has the energy mix evolved by source since 2014?
+- How much has the share of renewables grown?
+- Which source leads generation each year?
+- How has total consumption evolved (overall and renewable)?
+- What percentage of generation (overall and renewable) is consumed?
+
+### Pricing
+- How have prices evolved historically and seasonally?
+- How did 2022 impact current price levels?
+- What is the price distribution across hourly windows?
+
+### Cross-border Exchanges
+- Is Spain a net exporter or importer?
+- Which countries does Spain exchange the most energy with?
+
 ## Database Model
 
 Five fact tables loaded from the REE API:
@@ -49,11 +67,22 @@ All changes are tracked in a central `Historico` table via SQL triggers.
 REE-Energia/
 ├── .gitignore
 ├── README.md
-├── sql/
-│   ├── Tablas.sql          # Table and audit table definitions
-│   └── Triggers.sql        # Audit triggers for all tables
-└── python/
-    └── REE_Import.ipynb    # Historical data load (2014 → present)
+├── RESULTS.md
+├── .github/
+│   └── workflows/
+│       └── daily_load.yml                          # Automated daily workflow
+├── SQL/
+│   ├── Tables.sql                                  # Table and audit table definitions
+│   ├── Triggers.sql                                # Audit triggers for all tables
+│   ├── RESULTS_AnnualBreakdown.sql                 # Generation and consumption annual summary
+│   ├── RESULTS_Pricing_HistoricBreakdown.sql       # Historical price breakdown by month
+│   ├── RESULTS_Pricing_HoursBreakdown.sql          # Price breakdown by hourly window
+│   └── RESULTS_CrossBorder_ExchangesBreakdown.sql  # Cross-border exchange summary
+└── Python/
+    ├── REE_Import.ipynb                            # Historical data load (2014 → present)
+    ├── REE_Daily.py                                # Daily incremental load
+    ├── update_readme.py                            # Automated README update
+    └── update_results.py                           # Automated RESULTS.md update
 ```
 
 ---
