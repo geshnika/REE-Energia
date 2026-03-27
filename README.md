@@ -129,15 +129,13 @@ Full load takes approximately 15 minutes and inserts ~330,000 rows.
 
 | Table | Rows | Daily Change | From | To |
 |---|---|---|---|---|
-| `Generacion` | 54,209 | 13 | 2014-01-01 | 2026-03-26 |
-| `Demanda` | 4,468 | 1 | 2014-01-01 | 2026-03-26 |
-| `Emisiones` | 49,741 | 12 | 2014-01-01 | 2026-03-26 |
-| `Precios` | 181,873 | 120 | 2014-01-01 | 2026-03-26 |
-| `Intercambios` | 43,598 | 10 | 2014-01-01 | 2026-03-26 |
+| `Generacion` | 54,222 | 13 | 2014-01-01 | 2026-03-27 |
+| `Demanda` | 4,469 | 1 | 2014-01-01 | 2026-03-27 |
+| `Emisiones` | 49,753 | 12 | 2014-01-01 | 2026-03-27 |
+| `Precios` | 181,993 | 120 | 2014-01-01 | 2026-03-27 |
+| `Intercambios` | 43,608 | 10 | 2014-01-01 | 2026-03-27 |
 
-_Last updated: 2026-03-26 15:00 UTC_
-
-📊 [View full analysis and results](RESULTS.md)
+_Last updated: 2026-03-27 07:05 UTC_
 
 ---
 
