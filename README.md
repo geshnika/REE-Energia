@@ -150,10 +150,10 @@ _Last updated: 2026-04-06 07:28 UTC_
 
 Built with Power BI using data directly from Azure SQL.
 
-![About](Power%20BI/dashboard_about.jpg)
-![Overview](Power%20BI/dashboard_overview.jpg)
-![Pricing](Power%20BI/dashboard_pricing.jpg)
-![Generation](Power%20BI/dashboard_generation.jpg)
+![About](Power%20BI/1_about.jpg)
+![Overview](Power%20BI/2_overview.jpg)
+![Pricing](Power%20BI/3_pricing.jpg)
+![Generation](Power%20BI/4_generation.jpg)
 
 ---
 
