@@ -71,6 +71,13 @@ REE-Energia/
 ├── .github/
 │   └── workflows/
 │       └── daily_load.yml                          # Automated daily workflow
+├── Power BI/
+│   ├── Dashboard.pbix                              # Power BI dashboard (excluded from repo — see .gitignore)
+│   ├── 1_About.jpg                                 # Dashboard screenshot — About page
+│   ├── 2_Overall.jpg                               # Dashboard screenshot — Overview page
+│   ├── 3_Pricing.jpg                               # Dashboard screenshot — Pricing page
+│   ├── 4_Generation.jpg                            # Dashboard screenshot — Generation page
+│   └── REE_Logo.png                                # RED ELÉCTRICA DE ESPAÑA logo
 ├── SQL/
 │   ├── Tables.sql                                  # Table and audit table definitions
 │   ├── Triggers.sql                                # Audit triggers for all tables
