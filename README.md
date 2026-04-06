@@ -146,12 +146,23 @@ _Last updated: 2026-04-06 07:28 UTC_
 
 ---
 
+## Dashboard
+
+Built with Power BI using data directly from Azure SQL.
+
+![About](Power%20BI/dashboard_about.png)
+![Overview](Power%20BI/dashboard_overview.png)
+![Pricing](Power%20BI/dashboard_pricing.png)
+![Generation](Power%20BI/dashboard_generation.png)
+
+---
+
 ## Roadmap
 
 - [x] Historical data load
 - [x] Audit tracking via SQL triggers
 - [x] Automated daily updates via GitHub Actions
-- [ ] Power BI dashboard
+- [x] Power BI dashboard
 
 ---
 
