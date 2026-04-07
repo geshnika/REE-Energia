@@ -84,7 +84,7 @@ def merge_tabla(df, tabla, claves, columnas):
     start = time.time()
 
     # Crear tabla temporal con los datos nuevos
-    df.to_sql(f"##tmp_{tabla}", con = engine, if_exists = "replace", index = False)
+    df.to_sql(f"##tmp_{tabla.replace('.', '_')}", con = engine, if_exists = "replace", index = False)
 
     # Construir condición ON
     on_clause      = " AND ".join([f"T.{c} = S.{c}" for c in claves])
@@ -100,9 +100,11 @@ def merge_tabla(df, tabla, claves, columnas):
     insert_cols    = ", ".join(all_cols)
     insert_vals    = ", ".join([f"S.{c}" for c in all_cols])
 
+    tmp_name = f"##tmp_{tabla.replace('.', '_')}"
+
     merge_sql = f"""
         MERGE {tabla} AS T
-        USING ##tmp_{tabla} AS S
+        USING {tmp_name} AS S
         ON {on_clause}
         WHEN MATCHED AND ({match_clause})
             THEN UPDATE SET {set_clause}
@@ -116,7 +118,7 @@ def merge_tabla(df, tabla, claves, columnas):
 
     elapsed = round(time.time() - start, 2)
     return elapsed
-	
+
 # 4 — Generacion
 
 print("=" * 60)
@@ -151,7 +153,7 @@ df["Fecha"] = pd.to_datetime(df["Fecha"]).dt.date
 
 elapsed = merge_tabla(
     df       = df,
-    tabla    = "Generacion",
+    tabla    = "ree.Generacion",
     claves   = ["Fecha", "Fuente"],
     columnas = ["Valor_mwh", "Porcentaje"]
 )
@@ -191,7 +193,7 @@ df["Fecha"] = pd.to_datetime(df["Fecha"]).dt.date
 
 elapsed = merge_tabla(
     df       = df,
-    tabla    = "Demanda",
+    tabla    = "ree.Demanda",
     claves   = ["Fecha", "Tipo"],
     columnas = ["Valor_mwh"]
 )
@@ -230,7 +232,7 @@ df["Fecha"] = pd.to_datetime(df["Fecha"]).dt.date
 
 elapsed = merge_tabla(
     df       = df,
-    tabla    = "Emisiones",
+    tabla    = "ree.Emisiones",
     claves   = ["Fecha", "Tipo"],
     columnas = ["Valor"]
 )
@@ -272,7 +274,7 @@ df["Hora"]  = pd.to_datetime(df["Hora"], format = "%H:%M:%S").dt.time
 
 elapsed = merge_tabla(
     df       = df,
-    tabla    = "Precios",
+    tabla    = "ree.Precios",
     claves   = ["Fecha", "Hora", "Zona", "Tipo"],
     columnas = ["Valor_eur_mwh"]
 )
@@ -315,7 +317,7 @@ df["Fecha"] = pd.to_datetime(df["Fecha"]).dt.date
 
 elapsed = merge_tabla(
     df       = df,
-    tabla    = "Intercambios",
+    tabla    = "ree.Intercambios",
     claves   = ["Fecha", "Pais", "Tipo"],
     columnas = ["Valor_mwh"]
 )
@@ -337,11 +339,11 @@ with engine.connect() as conn:
             ,COUNT(*) AS Filas
             ,MIN(Fecha) AS Desde
             ,MAX(Fecha) AS Hasta
-        FROM Generacion
-        UNION ALL SELECT 'Demanda', COUNT(*), MIN(Fecha), MAX(Fecha) FROM Demanda
-        UNION ALL SELECT 'Emisiones', COUNT(*), MIN(Fecha), MAX(Fecha) FROM Emisiones
-        UNION ALL SELECT 'Precios', COUNT(*), MIN(Fecha), MAX(Fecha) FROM Precios
-        UNION ALL SELECT 'Intercambios', COUNT(*), MIN(Fecha), MAX(Fecha) FROM Intercambios
+        FROM ree.Generacion
+        UNION ALL SELECT 'Demanda',      COUNT(*), MIN(Fecha), MAX(Fecha) FROM ree.Demanda
+        UNION ALL SELECT 'Emisiones',    COUNT(*), MIN(Fecha), MAX(Fecha) FROM ree.Emisiones
+        UNION ALL SELECT 'Precios',      COUNT(*), MIN(Fecha), MAX(Fecha) FROM ree.Precios
+        UNION ALL SELECT 'Intercambios', COUNT(*), MIN(Fecha), MAX(Fecha) FROM ree.Intercambios
     """))
     df_resumen = pd.DataFrame(resultado.fetchall(), columns = ["Tabla", "Filas", "Desde", "Hasta"])
 

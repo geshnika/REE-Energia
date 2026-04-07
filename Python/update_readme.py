@@ -21,11 +21,11 @@ with engine.connect() as conn:
             ,SUM(IIF(FechaAlta = CAST(GETDATE() AS DATE), 1, 0)) AS DailyChange
             ,MIN(Fecha) AS Desde
             ,MAX(Fecha) AS Hasta
-        FROM Generacion
-        UNION ALL SELECT 'Demanda',      COUNT(*), SUM(IIF(FechaAlta = CAST(GETDATE() AS DATE), 1, 0)), MIN(Fecha), MAX(Fecha) FROM Demanda
-        UNION ALL SELECT 'Emisiones',    COUNT(*), SUM(IIF(FechaAlta = CAST(GETDATE() AS DATE), 1, 0)), MIN(Fecha), MAX(Fecha) FROM Emisiones
-        UNION ALL SELECT 'Precios',      COUNT(*), SUM(IIF(FechaAlta = CAST(GETDATE() AS DATE), 1, 0)), MIN(Fecha), MAX(Fecha) FROM Precios
-        UNION ALL SELECT 'Intercambios', COUNT(*), SUM(IIF(FechaAlta = CAST(GETDATE() AS DATE), 1, 0)), MIN(Fecha), MAX(Fecha) FROM Intercambios
+        FROM ree.Generacion
+        UNION ALL SELECT 'Demanda', COUNT(*), SUM(IIF(FechaAlta = CAST(GETDATE() AS DATE), 1, 0)), MIN(Fecha), MAX(Fecha) FROM ree.Demanda
+        UNION ALL SELECT 'Emisiones', COUNT(*), SUM(IIF(FechaAlta = CAST(GETDATE() AS DATE), 1, 0)), MIN(Fecha), MAX(Fecha) FROM ree.Emisiones
+        UNION ALL SELECT 'Precios', COUNT(*), SUM(IIF(FechaAlta = CAST(GETDATE() AS DATE), 1, 0)), MIN(Fecha), MAX(Fecha) FROM ree.Precios
+        UNION ALL SELECT 'Intercambios', COUNT(*), SUM(IIF(FechaAlta = CAST(GETDATE() AS DATE), 1, 0)), MIN(Fecha), MAX(Fecha) FROM ree.Intercambios
     """))
     filas = resultado.fetchall()
 

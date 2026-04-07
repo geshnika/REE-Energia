@@ -57,7 +57,7 @@ with engine.connect() as conn:
                         END AS Renovable
                     ,Fuente
                     ,Valor_mwh
-                FROM Generacion
+                FROM ree.Generacion
                 WHERE Fuente <> 'Generación total'
                 ) AS ETL
             GROUP BY
@@ -85,7 +85,7 @@ with engine.connect() as conn:
             SELECT
                  YEAR(Fecha) AS Año
                 ,SUM(Valor_mwh) AS ConsumoTotal
-            FROM Demanda
+            FROM ree.Demanda
             GROUP BY YEAR(Fecha)
         ),
 
@@ -98,7 +98,7 @@ with engine.connect() as conn:
                 ,ROUND(SUM(IIF(Tipo = 'saldo', Valor_mwh, 0)), 2) AS Saldo
                 ,ROW_NUMBER() OVER (PARTITION BY YEAR(Fecha) ORDER BY SUM(IIF(Tipo = 'Exportación', Valor_mwh, 0)) ASC) AS TopExporter
                 ,ROW_NUMBER() OVER (PARTITION BY YEAR(Fecha) ORDER BY SUM(IIF(Tipo = 'Importación', Valor_mwh, 0)) DESC) AS TopImporter
-            FROM Intercambios
+            FROM ree.Intercambios
             GROUP BY
                  YEAR(Fecha)
                 ,Pais
@@ -141,7 +141,7 @@ with engine.connect() as conn:
                 ,CAST(AVG(Valor_eur_mwh) AS DECIMAL(10, 2)) AS AVG_Valor
                 ,CAST(MIN(Valor_eur_mwh) AS DECIMAL(10, 2)) AS MIN_Valor
                 ,CAST(MAX(Valor_eur_mwh) AS DECIMAL(10, 2)) AS MAX_Valor
-            FROM Precios
+            FROM ree.Precios
             GROUP BY
                  YEAR(Fecha)
                 ,MONTH(Fecha)
@@ -235,7 +235,7 @@ with engine.connect() as conn:
                 ,CAST(AVG(IIF(Hora BETWEEN '14:00:00' AND '17:59:00', Valor_eur_mwh, NULL)) AS DECIMAL(5, 2)) AS [14:00 - 17:59]
                 ,CAST(AVG(IIF(Hora BETWEEN '18:00:00' AND '21:59:00', Valor_eur_mwh, NULL)) AS DECIMAL(5, 2)) AS [18:00 - 21:59]
                 ,CAST(AVG(IIF(Hora BETWEEN '22:00:00' AND '23:59:00', Valor_eur_mwh, NULL)) AS DECIMAL(5, 2)) AS [22:00 - 23:59]
-            FROM Precios
+            FROM ree.Precios
             GROUP BY YEAR(Fecha)
 
             UNION ALL
@@ -249,7 +249,7 @@ with engine.connect() as conn:
                 ,MAX(IIF(Hora BETWEEN '14:00:00' AND '17:59:00', Valor_eur_mwh, NULL)) AS [14:00 - 17:59]
                 ,MAX(IIF(Hora BETWEEN '18:00:00' AND '21:59:00', Valor_eur_mwh, NULL)) AS [18:00 - 21:59]
                 ,MAX(IIF(Hora BETWEEN '22:00:00' AND '23:59:00', Valor_eur_mwh, NULL)) AS [22:00 - 23:59]
-            FROM Precios
+            FROM ree.Precios
             GROUP BY YEAR(Fecha)
 
             UNION ALL
@@ -263,7 +263,7 @@ with engine.connect() as conn:
                 ,MIN(IIF(Hora BETWEEN '14:00:00' AND '17:59:00', Valor_eur_mwh, NULL)) AS [14:00 - 17:59]
                 ,MIN(IIF(Hora BETWEEN '18:00:00' AND '21:59:00', Valor_eur_mwh, NULL)) AS [18:00 - 21:59]
                 ,MIN(IIF(Hora BETWEEN '22:00:00' AND '23:59:00', Valor_eur_mwh, NULL)) AS [22:00 - 23:59]
-            FROM Precios
+            FROM ree.Precios
             GROUP BY YEAR(Fecha)
             ) AS Tranche
         ORDER BY Id DESC
@@ -282,7 +282,7 @@ with engine.connect() as conn:
             ,ROUND(SUM(IIF(Tipo = 'Exportación', Valor_mwh, NULL)), 2) AS Export
             ,ROUND(SUM(IIF(Tipo = 'Importación', Valor_mwh, NULL)), 2) AS Import
             ,ROUND(SUM(IIF(Tipo = 'saldo', Valor_mwh, NULL)), 2) AS Balance
-        FROM Intercambios
+        FROM ree.Intercambios
 
         UNION ALL
 
@@ -292,7 +292,7 @@ with engine.connect() as conn:
             ,ROUND(SUM(IIF(Tipo = 'Exportación', Valor_mwh, 0)), 2) AS Export
             ,ROUND(SUM(IIF(Tipo = 'Importación', Valor_mwh, 0)), 2) AS Import
             ,ROUND(SUM(IIF(Tipo = 'saldo', Valor_mwh, 0)), 2) AS Balance
-        FROM Intercambios
+        FROM ree.Intercambios
         GROUP BY Pais
     """))
     filas    = resultado.fetchall()
