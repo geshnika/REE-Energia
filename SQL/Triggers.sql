@@ -3,13 +3,13 @@
 -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
 
 CREATE TRIGGER TRG_GeneracionHistorico
-ON Generacion
+ON ree.Generacion
 AFTER UPDATE
 AS
 
 BEGIN
 
-    INSERT INTO Historico (Tabla, Id, Columna, ValorPrevio, ValorNuevo)
+    INSERT INTO ree.Historico (Tabla, Id, Columna, ValorPrevio, ValorNuevo)
     SELECT 
           'Generacion'
           ,I.Id
@@ -20,7 +20,7 @@ BEGIN
     INNER JOIN Deleted AS D ON I.Id = D.Id
     WHERE ISNULL(CAST(I.Fecha AS NVARCHAR(MAX)), '') <> ISNULL(CAST(D.Fecha AS NVARCHAR(MAX)), '');
 
-    INSERT INTO Historico (Tabla, Id, Columna, ValorPrevio, ValorNuevo)
+    INSERT INTO ree.Historico (Tabla, Id, Columna, ValorPrevio, ValorNuevo)
     SELECT 
           'Generacion'
           ,I.Id
@@ -31,7 +31,7 @@ BEGIN
     INNER JOIN Deleted AS D ON I.Id = D.Id
     WHERE ISNULL(I.Fuente, '') <> ISNULL(D.Fuente, '');
 
-    INSERT INTO Historico (Tabla, Id, Columna, ValorPrevio, ValorNuevo)
+    INSERT INTO ree.Historico (Tabla, Id, Columna, ValorPrevio, ValorNuevo)
     SELECT 
           'Generacion'
           ,I.Id
@@ -42,7 +42,7 @@ BEGIN
     INNER JOIN Deleted AS D ON I.Id = D.Id
     WHERE ISNULL(I.Valor_mwh, -1) <> ISNULL(D.Valor_mwh, -1);
 
-    INSERT INTO Historico (Tabla, Id, Columna, ValorPrevio, ValorNuevo)
+    INSERT INTO ree.Historico (Tabla, Id, Columna, ValorPrevio, ValorNuevo)
     SELECT 
           'Generacion'
           ,I.Id
@@ -62,13 +62,13 @@ GO
 -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
 
 CREATE TRIGGER TRG_DemandaHistorico
-ON Demanda
+ON ree.Demanda
 AFTER UPDATE
 AS
 
 BEGIN
 
-    INSERT INTO Historico (Tabla, Id, Columna, ValorPrevio, ValorNuevo)
+    INSERT INTO ree.Historico (Tabla, Id, Columna, ValorPrevio, ValorNuevo)
     SELECT
           'Demanda'
           ,I.Id
@@ -79,7 +79,7 @@ BEGIN
     INNER JOIN Deleted AS D ON I.Id = D.Id
     WHERE ISNULL(CAST(I.Fecha AS NVARCHAR(MAX)), '') <> ISNULL(CAST(D.Fecha AS NVARCHAR(MAX)), '');
 
-    INSERT INTO Historico (Tabla, Id, Columna, ValorPrevio, ValorNuevo)
+    INSERT INTO ree.Historico (Tabla, Id, Columna, ValorPrevio, ValorNuevo)
     SELECT 
           'Demanda'
           ,I.Id
@@ -90,7 +90,7 @@ BEGIN
     INNER JOIN Deleted AS D ON I.Id = D.Id
     WHERE ISNULL(I.Tipo, '') <> ISNULL(D.Tipo, '');
 
-    INSERT INTO Historico (Tabla, Id, Columna, ValorPrevio, ValorNuevo)
+    INSERT INTO ree.Historico (Tabla, Id, Columna, ValorPrevio, ValorNuevo)
     SELECT 
           'Demanda'
           ,I.Id
@@ -110,13 +110,13 @@ GO
 -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
 
 CREATE TRIGGER TRG_EmisionesHistorico
-ON Emisiones
+ON ree.Emisiones
 AFTER UPDATE
 AS
 
 BEGIN
 
-    INSERT INTO Historico (Tabla, Id, Columna, ValorPrevio, ValorNuevo)
+    INSERT INTO ree.Historico (Tabla, Id, Columna, ValorPrevio, ValorNuevo)
     SELECT 
           'Emisiones'
           ,I.Id
@@ -127,7 +127,7 @@ BEGIN
     INNER JOIN Deleted AS D ON I.Id = D.Id
     WHERE ISNULL(CAST(I.Fecha AS NVARCHAR(MAX)), '') <> ISNULL(CAST(D.Fecha AS NVARCHAR(MAX)), '');
 
-    INSERT INTO Historico (Tabla, Id, Columna, ValorPrevio, ValorNuevo)
+    INSERT INTO ree.Historico (Tabla, Id, Columna, ValorPrevio, ValorNuevo)
     SELECT 
           'Emisiones'
           ,I.Id
@@ -138,7 +138,7 @@ BEGIN
     INNER JOIN Deleted AS D ON I.Id = D.Id
     WHERE ISNULL(I.Tipo, '') <> ISNULL(D.Tipo, '');
 
-    INSERT INTO Historico (Tabla, Id, Columna, ValorPrevio, ValorNuevo)
+    INSERT INTO ree.Historico (Tabla, Id, Columna, ValorPrevio, ValorNuevo)
     SELECT 
           'Emisiones'
           ,I.Id
@@ -158,13 +158,13 @@ GO
 -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
 
 CREATE TRIGGER TRG_PreciosHistorico
-ON Precios
+ON ree.Precios
 AFTER UPDATE
 AS
 
 BEGIN
 
-    INSERT INTO Historico (Tabla, Id, Columna, ValorPrevio, ValorNuevo)
+    INSERT INTO ree.Historico (Tabla, Id, Columna, ValorPrevio, ValorNuevo)
     SELECT 
           'Precios'
           ,I.Id
@@ -175,7 +175,7 @@ BEGIN
     INNER JOIN Deleted AS D ON I.Id = D.Id
     WHERE ISNULL(CAST(I.Fecha AS NVARCHAR(MAX)), '') <> ISNULL(CAST(D.Fecha AS NVARCHAR(MAX)), '');
 
-    INSERT INTO Historico (Tabla, Id, Columna, ValorPrevio, ValorNuevo)
+    INSERT INTO ree.Historico (Tabla, Id, Columna, ValorPrevio, ValorNuevo)
     SELECT 
           'Precios'
           ,I.Id
@@ -186,7 +186,7 @@ BEGIN
     INNER JOIN Deleted AS D ON I.Id = D.Id
     WHERE ISNULL(I.Tipo, '') <> ISNULL(D.Tipo, '');
 
-    INSERT INTO Historico (Tabla, Id, Columna, ValorPrevio, ValorNuevo)
+    INSERT INTO ree.Historico (Tabla, Id, Columna, ValorPrevio, ValorNuevo)
     SELECT 
           'Precios'
           ,I.Id
@@ -206,13 +206,13 @@ GO
 -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
 
 CREATE TRIGGER TRG_IntercambiosHistorico
-ON Intercambios
+ON ree.Intercambios
 AFTER UPDATE
 AS
 
 BEGIN
 
-    INSERT INTO Historico (Tabla, Id, Columna, ValorPrevio, ValorNuevo)
+    INSERT INTO ree.Historico (Tabla, Id, Columna, ValorPrevio, ValorNuevo)
     SELECT 
           'Intercambios'
           ,I.Id
@@ -223,7 +223,7 @@ BEGIN
     INNER JOIN Deleted AS D ON I.Id = D.Id
     WHERE ISNULL(CAST(I.Fecha AS NVARCHAR(MAX)), '') <> ISNULL(CAST(D.Fecha AS NVARCHAR(MAX)), '');
 
-    INSERT INTO Historico (Tabla, Id, Columna, ValorPrevio, ValorNuevo)
+    INSERT INTO ree.Historico (Tabla, Id, Columna, ValorPrevio, ValorNuevo)
     SELECT 
           'Intercambios'
           ,I.Id
@@ -234,7 +234,7 @@ BEGIN
     INNER JOIN Deleted AS D ON I.Id = D.Id
     WHERE ISNULL(I.Pais, '') <> ISNULL(D.Pais, '');
 
-    INSERT INTO Historico (Tabla, Id, Columna, ValorPrevio, ValorNuevo)
+    INSERT INTO ree.Historico (Tabla, Id, Columna, ValorPrevio, ValorNuevo)
     SELECT 
           'Intercambios'
           ,I.Id
@@ -245,7 +245,7 @@ BEGIN
     INNER JOIN Deleted AS D ON I.Id = D.Id
     WHERE ISNULL(I.Tipo, '') <> ISNULL(D.Tipo, '');
 
-    INSERT INTO Historico (Tabla, Id, Columna, ValorPrevio, ValorNuevo)
+    INSERT INTO ree.Historico (Tabla, Id, Columna, ValorPrevio, ValorNuevo)
     SELECT 
           'Intercambios'
           ,I.Id

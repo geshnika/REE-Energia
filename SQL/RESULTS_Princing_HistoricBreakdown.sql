@@ -10,7 +10,7 @@ WITH
         ,CAST(AVG(Valor_eur_mwh) AS DECIMAL(10, 2)) AS AVG_Valor
         ,CAST(MIN(Valor_eur_mwh) AS DECIMAL(10, 2)) AS MIN_Valor
         ,CAST(MAX(Valor_eur_mwh) AS DECIMAL(10, 2)) AS MAX_Valor
-    FROM Precios
+    FROM ree.Precios
     GROUP BY
          YEAR(Fecha)
         ,MONTH(Fecha)

@@ -12,7 +12,7 @@ FROM ( -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- - - Tabla 
 		,CAST(AVG(IIF(Hora BETWEEN '14:00:00' AND '17:59:00', Valor_eur_mwh, NULL)) AS DECIMAL (5, 2)) AS [14:00 - 17:59]
 		,CAST(AVG(IIF(Hora BETWEEN '18:00:00' AND '21:59:00', Valor_eur_mwh, NULL)) AS DECIMAL (5, 2)) AS [18:00 - 21:59]
 		,CAST(AVG(IIF(Hora BETWEEN '22:00:00' AND '23:59:00', Valor_eur_mwh, NULL)) AS DECIMAL (5, 2)) AS [22:00 - 23:59]
-	FROM Precios
+	FROM ree.Precios
 	GROUP BY YEAR(Fecha)
 	
 	UNION ALL
@@ -26,7 +26,7 @@ FROM ( -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- - - Tabla 
 		,MAX(IIF(Hora BETWEEN '14:00:00' AND '17:59:00', Valor_eur_mwh, NULL)) AS [14:00 - 17:59]
 		,MAX(IIF(Hora BETWEEN '18:00:00' AND '21:59:00', Valor_eur_mwh, NULL)) AS [18:00 - 21:59]
 		,MAX(IIF(Hora BETWEEN '22:00:00' AND '23:59:00', Valor_eur_mwh, NULL)) AS [22:00 - 23:59]
-	FROM Precios
+	FROM ree.Precios
 	GROUP BY YEAR(Fecha)
 	
 	UNION ALL
@@ -40,7 +40,7 @@ FROM ( -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- - - Tabla 
 		,MIN(IIF(Hora BETWEEN '14:00:00' AND '17:59:00', Valor_eur_mwh, NULL)) AS [14:00 - 17:59]
 		,MIN(IIF(Hora BETWEEN '18:00:00' AND '21:59:00', Valor_eur_mwh, NULL)) AS [18:00 - 21:59]
 		,MIN(IIF(Hora BETWEEN '22:00:00' AND '23:59:00', Valor_eur_mwh, NULL)) AS [22:00 - 23:59]
-	FROM Precios
+	FROM ree.Precios
 	GROUP BY YEAR(Fecha)
 	) AS SegmentacionHoraria
 

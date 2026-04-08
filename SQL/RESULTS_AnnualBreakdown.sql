@@ -40,7 +40,7 @@ WITH
 				END AS Renovable
 		    ,Fuente
 		    ,Valor_mwh
-		FROM Generacion
+		FROM ree.Generacion
 		WHERE Fuente <> 'Generación total' -- Excluimos 'Generación total', ya que viene incluida en la API.
 		) AS ETL
 
@@ -69,7 +69,7 @@ WITH
 	SELECT
 		 YEAR(Fecha) AS Año
 		,SUM(Valor_Mwh) AS ConsumoTotal
-	FROM Demanda
+	FROM ree.Demanda
 	GROUP BY YEAR(Fecha)
 ),
 
@@ -82,7 +82,7 @@ WITH
         ,ROUND(SUM(IIF(Tipo = 'saldo', Valor_mwh, 0)), 2) AS Saldo
         ,ROW_NUMBER() OVER (PARTITION BY YEAR(Fecha) ORDER BY SUM(IIF(Tipo = 'Exportación', Valor_mwh, 0)) ASC) AS TopExporter
         ,ROW_NUMBER() OVER (PARTITION BY YEAR(Fecha) ORDER BY SUM(IIF(Tipo = 'Importación', Valor_mwh, 0)) DESC) AS TopImporter
-    FROM Intercambios
+    FROM ree.Intercambios
     GROUP BY
          YEAR(Fecha)
         ,Pais
