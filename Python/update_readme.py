@@ -1,7 +1,9 @@
 import os
 import re
+import time
 from datetime import datetime, timezone
 from sqlalchemy import create_engine, text
+from sqlalchemy.exc import DBAPIError
 from dotenv import load_dotenv
 
 load_dotenv()
@@ -12,22 +14,35 @@ engine = create_engine(
     "?driver=ODBC+Driver+17+for+SQL+Server"
 )
 
-# ── Consulta: resumen de tablas ──────────────────────────────
-with engine.connect() as conn:
-    resultado = conn.execute(text("""
-        SELECT
-             'Generacion' AS Tabla
-            ,COUNT(*) AS Filas
-            ,SUM(IIF(FechaAlta = CAST(GETDATE() AS DATE), 1, 0)) AS DailyChange
-            ,MIN(Fecha) AS Desde
-            ,MAX(Fecha) AS Hasta
-        FROM ree.Generacion
-        UNION ALL SELECT 'Demanda', COUNT(*), SUM(IIF(FechaAlta = CAST(GETDATE() AS DATE), 1, 0)), MIN(Fecha), MAX(Fecha) FROM ree.Demanda
-        UNION ALL SELECT 'Emisiones', COUNT(*), SUM(IIF(FechaAlta = CAST(GETDATE() AS DATE), 1, 0)), MIN(Fecha), MAX(Fecha) FROM ree.Emisiones
-        UNION ALL SELECT 'Precios', COUNT(*), SUM(IIF(FechaAlta = CAST(GETDATE() AS DATE), 1, 0)), MIN(Fecha), MAX(Fecha) FROM ree.Precios
-        UNION ALL SELECT 'Intercambios', COUNT(*), SUM(IIF(FechaAlta = CAST(GETDATE() AS DATE), 1, 0)), MIN(Fecha), MAX(Fecha) FROM ree.Intercambios
-    """))
-    filas = resultado.fetchall()
+# ── Consulta: resumen de tablas (con reintentos) ─────────────
+MAX_RETRIES = 5
+RETRY_DELAY = 30  # segundos entre intentos
+
+for attempt in range(1, MAX_RETRIES + 1):
+    try:
+        with engine.connect() as conn:
+            resultado = conn.execute(text("""
+                SELECT
+                     'Generacion' AS Tabla
+                    ,COUNT(*) AS Filas
+                    ,SUM(IIF(FechaAlta = CAST(GETDATE() AS DATE), 1, 0)) AS DailyChange
+                    ,MIN(Fecha) AS Desde
+                    ,MAX(Fecha) AS Hasta
+                FROM ree.Generacion
+                UNION ALL SELECT 'Demanda', COUNT(*), SUM(IIF(FechaAlta = CAST(GETDATE() AS DATE), 1, 0)), MIN(Fecha), MAX(Fecha) FROM ree.Demanda
+                UNION ALL SELECT 'Emisiones', COUNT(*), SUM(IIF(FechaAlta = CAST(GETDATE() AS DATE), 1, 0)), MIN(Fecha), MAX(Fecha) FROM ree.Emisiones
+                UNION ALL SELECT 'Precios', COUNT(*), SUM(IIF(FechaAlta = CAST(GETDATE() AS DATE), 1, 0)), MIN(Fecha), MAX(Fecha) FROM ree.Precios
+                UNION ALL SELECT 'Intercambios', COUNT(*), SUM(IIF(FechaAlta = CAST(GETDATE() AS DATE), 1, 0)), MIN(Fecha), MAX(Fecha) FROM ree.Intercambios
+            """))
+            filas = resultado.fetchall()
+        print(f"Conexión exitosa en el intento {attempt}/{MAX_RETRIES}")
+        break  # éxito → salir del bucle
+    except DBAPIError as e:
+        print(f"Intento {attempt}/{MAX_RETRIES} fallido: {e.orig}")
+        if attempt == MAX_RETRIES:
+            raise SystemExit(f"No se pudo conectar tras {MAX_RETRIES} intentos.") from e
+        print(f"Esperando {RETRY_DELAY}s antes de reintentar...")
+        time.sleep(RETRY_DELAY)
 
 # ── Construir tabla markdown ──────────────────────────────────
 tabla_md  = "| Table | Rows | Daily Change | From | To |\n"
