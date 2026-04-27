@@ -1,6 +1,6 @@
 # Results — Spanish Electrical System
 
-_Last updated: 2026-04-24 08:03 UTC_
+_Last updated: 2026-04-27 08:23 UTC_
 
 ---
 
