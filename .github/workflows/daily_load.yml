@@ -16,7 +16,7 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
-          python-version: '3.14'
+          python-version: '3.12'
 
       - name: Install dependencies
         run: |
@@ -25,17 +25,17 @@ jobs:
 
       - name: Install ODBC Driver
         run: |
+          curl -fsSL https://packages.microsoft.com/keys/microsoft.asc | sudo gpg --dearmor -o /usr/share/keyrings/microsoft-prod.gpg
+          curl -fsSL https://packages.microsoft.com/config/ubuntu/$(lsb_release -rs)/prod.list \
+            | sudo tee /etc/apt/sources.list.d/mssql-release.list
           sudo apt-get update
-          sudo apt-get install -y unixodbc-dev
-          pip install pyodbc
-          wget -q https://packages.microsoft.com/ubuntu/22.04/prod/pool/main/m/msodbcsql17/msodbcsql17_17.10.6.1-1_amd64.deb
-          sudo ACCEPT_EULA=Y dpkg -i msodbcsql17_17.10.6.1-1_amd64.deb || sudo apt-get install -f -y
+          sudo ACCEPT_EULA=Y apt-get install -y msodbcsql18 unixodbc-dev
         env:
           DEBIAN_FRONTEND: noninteractive
 
       - name: Run daily load
         run: |
-          for i in 1 2 3; do
+          for i in 1 2; do
             python Python/REE_Daily.py && break
             echo "Intento $i fallido, reintentando en 30s..."
             sleep 30

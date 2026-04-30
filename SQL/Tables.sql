@@ -2,7 +2,7 @@
 --                                                    Tabla: Generacion                                                      --
 -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
 
-CREATE TABLE Generacion (
+CREATE TABLE ree.Generacion (
     Id          INT IDENTITY(1,1) PRIMARY KEY,
     Fecha       DATE,
     Fuente      NVARCHAR(100),
@@ -10,56 +10,54 @@ CREATE TABLE Generacion (
     Porcentaje  FLOAT,
     FechaAlta   DATE DEFAULT CAST(GETDATE() AS DATE),
     HoraAlta    TIME DEFAULT CAST(GETDATE() AS TIME)
-)
-;
+);
 
 -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
---                                                      Tabla: Demanda                                                        --
+--                                                      Tabla: Demanda                                                       --
 -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
 
-CREATE TABLE Demanda (
+CREATE TABLE ree.Demanda (
     Id          INT IDENTITY(1,1) PRIMARY KEY,
     Fecha       DATE,
     Tipo        NVARCHAR(100),
     Valor_mwh   FLOAT,
     FechaAlta   DATE DEFAULT CAST(GETDATE() AS DATE),
     HoraAlta    TIME DEFAULT CAST(GETDATE() AS TIME)
-)
-;
+);
 
 -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
---                                                     Tabla: Emisiones                                                       --
+--                                                     Tabla: Emisiones                                                      --
 -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
 
-CREATE TABLE Emisiones (
+CREATE TABLE ree.Emisiones (
     Id          INT IDENTITY(1,1) PRIMARY KEY,
     Fecha       DATE,
     Tipo        NVARCHAR(100),
     Valor       FLOAT,
     FechaAlta   DATE DEFAULT CAST(GETDATE() AS DATE),
     HoraAlta    TIME DEFAULT CAST(GETDATE() AS TIME)
-)
-;
+);
 
 -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
---                                                      Tabla: Precios                                                        --
+--                                                      Tabla: Precios                                                       --
 -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
 
-CREATE TABLE Precios (
+CREATE TABLE ree.Precios (
     Id            INT IDENTITY(1,1) PRIMARY KEY,
     Fecha         DATE,
+    Hora          TIME,
+    Zona          NVARCHAR(100),
     Tipo          NVARCHAR(100),
     Valor_eur_mwh FLOAT,
     FechaAlta     DATE DEFAULT CAST(GETDATE() AS DATE),
     HoraAlta      TIME DEFAULT CAST(GETDATE() AS TIME)
-)
-;
+);
 
 -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
---                                                    Tabla: Intercambios                                                     --
+--                                                    Tabla: Intercambios                                                    --
 -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
 
-CREATE TABLE Intercambios (
+CREATE TABLE ree.Intercambios (
     Id          INT IDENTITY(1,1) PRIMARY KEY,
     Fecha       DATE,
     Pais        NVARCHAR(100),
@@ -67,14 +65,13 @@ CREATE TABLE Intercambios (
     Valor_mwh   FLOAT,
     FechaAlta   DATE DEFAULT CAST(GETDATE() AS DATE),
     HoraAlta    TIME DEFAULT CAST(GETDATE() AS TIME)
-)
-;
+);
 
 -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
---                                                     Tabla: Historico                                                       --
+--                                                     Tabla: Historico                                                      --
 -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
 
-CREATE TABLE Historico (
+CREATE TABLE ree.Historico (
     IdHistorico INT IDENTITY(1,1) PRIMARY KEY,
     Tabla       NVARCHAR(100),
     Id          INT,
@@ -83,5 +80,4 @@ CREATE TABLE Historico (
     ValorNuevo  NVARCHAR(MAX),
     FechaAlta   DATE DEFAULT CAST(GETDATE() AS DATE),
     HoraAlta    TIME DEFAULT CAST(GETDATE() AS TIME)
-)
-;
+);

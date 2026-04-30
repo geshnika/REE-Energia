@@ -19,7 +19,7 @@ Covers generation, demand, emissions, market prices and cross-border exchanges f
 | Layer | Technology |
 |---|---|
 | Data source | REE API (apidatos.ree.es) |
-| Language | Python 3.14 |
+| Language | Python 3.12 |
 | Database | Azure SQL (Free Tier) |
 | Orchestration | GitHub Actions |
 | Visualization | Power BI |
@@ -98,9 +98,9 @@ REE-Energia/
 
 ### 1. Prerequisites
 
-- Python 3.14+
+- Python 3.12+
 - Azure SQL database (free tier)
-- ODBC Driver 17 for SQL Server
+- ODBC Driver 18 for SQL Server
 
 ### 2. Install dependencies
 ```bash
@@ -109,7 +109,7 @@ python -m pip install requests pandas sqlalchemy pyodbc python-dotenv
 
 ### 3. Configure credentials
 
-Create a `.env` file in the `python/` folder:
+Create a `.env` file in the `Python/` folder:
 ```
 DB_SERVER=your_server.database.windows.net
 DB_NAME=your_database
@@ -121,13 +121,13 @@ DB_PASSWORD=your_password
 
 Run the SQL scripts in order:
 ```
-sql/Tablas.sql      → creates all tables
-sql/Triggers.sql    → creates audit triggers
+SQL/Tables.sql      → creates all tables
+SQL/Triggers.sql    → creates audit triggers
 ```
 
 ### 5. Run the historical load
 
-Open `python/REE_Import.ipynb` and run all cells.
+Open `Python/REE_Import.ipynb` and run all cells.
 Full load takes approximately 15 minutes and inserts ~330,000 rows.
 
 ---

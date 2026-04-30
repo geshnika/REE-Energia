@@ -31,9 +31,8 @@ if faltantes:
 def crear_engine():
     return create_engine(
         f"mssql+pyodbc://{DB_USER}:{DB_PASSWORD}@{DB_SERVER}/{DB_NAME}"
-        "?driver=ODBC+Driver+17+for+SQL+Server",
-        connect_args    = {"timeout": 180},
-        fast_executemany = True
+        "?driver=ODBC+Driver+18+for+SQL+Server&TrustServerCertificate=yes",
+        connect_args = {"timeout": 180}
     )
 
 for intento in range(3):
@@ -87,6 +86,10 @@ def verificar_api(url, params):
     return response.json()
 
 def cargar_tabla(df, tabla, claves):
+    """
+    DELETE del rango de fechas del DataFrame + INSERT via cursor nativo.
+    Sin tablas temporales, sin conflicto con IDENTITY.
+    """
     if df.empty:
         print("  Sin filas para procesar.")
         return 0.0
