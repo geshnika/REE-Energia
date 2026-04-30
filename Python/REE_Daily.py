@@ -85,76 +85,32 @@ def verificar_api(url, params):
         raise ValueError("API respondió con cuerpo vacío")
     return response.json()
 
-def merge_tabla(df, tabla, claves, columnas):
+def cargar_tabla(df, tabla, claves):
     """
-    Inserta/actualiza usando una única conexión persistente:
-    - Crea tabla temporal #tmp dentro de la misma transacción
-    - Ejecuta MERGE contra la tabla destino
-    - INSERT si la fila no existe
-    - UPDATE si existe y cambió algún valor (dispara trigger → Historico)
-    - Ignora si existe y no cambió
+    DELETE del rango de fechas del DataFrame + INSERT de todas las filas.
+    Sin MERGE, sin tablas temporales, sin conflicto con IDENTITY.
     """
     if df.empty:
         print("  Sin filas para procesar.")
         return 0.0
 
-    start      = time.time()
-    tmp_name   = "#tmp_merge"
-    schema     = tabla.split(".")[0]
-    base_tabla = tabla.split(".")[1]
-    all_cols   = claves + columnas
+    start    = time.time()
+    fecha_min = str(df["Fecha"].min())
+    fecha_max = str(df["Fecha"].max())
 
-    # Mapeo de tipos pandas → SQL Server
-    tipo_sql = {
-        "object"  : "NVARCHAR(200)",
-        "float64" : "FLOAT",
-        "int64"   : "INT",
-        "bool"    : "BIT"
-    }
-
-    col_defs = []
-    for col in all_cols:
-        dtype    = str(df[col].dtype)
-        sql_type = tipo_sql.get(dtype, "NVARCHAR(200)")
-        if col == "Fecha":
-            sql_type = "DATE"
-        elif col == "Hora":
-            sql_type = "TIME"
-        col_defs.append(f"[{col}] {sql_type}")
-
-    create_tmp = f"CREATE TABLE {tmp_name} ({', '.join(col_defs)})"
-
-    on_clause    = " AND ".join([f"T.[{c}] = S.[{c}]" for c in claves])
-    match_clause = " OR ".join([f"T.[{c}] <> S.[{c}]" for c in columnas])
-    set_clause   = ", ".join([f"T.[{c}] = S.[{c}]" for c in columnas])
-    insert_cols  = ", ".join([f"[{c}]" for c in all_cols])
-    insert_vals  = ", ".join([f"S.[{c}]" for c in all_cols])
-
-    merge_sql = f"""
-        MERGE [{schema}].[{base_tabla}] AS T
-        USING {tmp_name} AS S
-        ON {on_clause}
-        WHEN MATCHED AND ({match_clause})
-            THEN UPDATE SET {set_clause}
-        WHEN NOT MATCHED
-            THEN INSERT ({insert_cols}) VALUES ({insert_vals});
-    """
-
-    # Todo dentro de la misma conexión para que #tmp sea visible
     with engine.begin() as conn:
-        conn.execute(text(f"IF OBJECT_ID('tempdb..{tmp_name}') IS NOT NULL DROP TABLE {tmp_name}"))
-        conn.execute(text(create_tmp))
+        conn.execute(text(f"""
+            DELETE FROM {tabla}
+            WHERE Fecha BETWEEN :ini AND :fin
+        """), {"ini": fecha_min, "fin": fecha_max})
 
-        # Insertar filas en lote con executemany via cursor nativo
-        rows         = [tuple(row) for row in df[all_cols].itertuples(index=False, name=None)]
-        col_list     = ", ".join([f"[{c}]" for c in all_cols])
-        placeholders = ", ".join(["?" for _ in all_cols])
-        insert_tmp   = f"INSERT INTO {tmp_name} ({col_list}) VALUES ({placeholders})"
-
-        raw_cursor = conn.connection.cursor()
-        raw_cursor.executemany(insert_tmp, rows)
-
-        conn.execute(text(merge_sql))
+        df.to_sql(
+            tabla.split(".")[1],
+            con       = conn,
+            schema    = tabla.split(".")[0],
+            if_exists = "append",
+            index     = False
+        )
 
     return round(time.time() - start, 2)
 
@@ -187,11 +143,11 @@ for fuente in datos:
         })
 
 if not registros:
-    print(f"ADVERTENCIA: API devolvió 0 registros para el rango {start_str} → {end_str}")
+    print(f"ADVERTENCIA: API devolvió 0 registros para {start_str} → {end_str}")
 else:
     df          = pd.DataFrame(registros)
     df["Fecha"] = pd.to_datetime(df["Fecha"]).dt.date
-    elapsed     = merge_tabla(df, "ree.Generacion", ["Fecha", "Fuente"], ["Valor_mwh", "Porcentaje"])
+    elapsed     = cargar_tabla(df, "ree.Generacion", ["Fecha", "Fuente"])
     print(f"{len(df):,} filas procesadas | {elapsed}s")
 
 # 6 — Demanda
@@ -222,11 +178,11 @@ for item in datos:
         })
 
 if not registros:
-    print(f"ADVERTENCIA: API devolvió 0 registros para el rango {start_str} → {end_str}")
+    print(f"ADVERTENCIA: API devolvió 0 registros para {start_str} → {end_str}")
 else:
     df          = pd.DataFrame(registros)
     df["Fecha"] = pd.to_datetime(df["Fecha"]).dt.date
-    elapsed     = merge_tabla(df, "ree.Demanda", ["Fecha", "Tipo"], ["Valor_mwh"])
+    elapsed     = cargar_tabla(df, "ree.Demanda", ["Fecha", "Tipo"])
     print(f"{len(df):,} filas procesadas | {elapsed}s")
 
 # 7 — Emisiones
@@ -257,11 +213,11 @@ for item in datos:
         })
 
 if not registros:
-    print(f"ADVERTENCIA: API devolvió 0 registros para el rango {start_str} → {end_str}")
+    print(f"ADVERTENCIA: API devolvió 0 registros para {start_str} → {end_str}")
 else:
     df          = pd.DataFrame(registros)
     df["Fecha"] = pd.to_datetime(df["Fecha"]).dt.date
-    elapsed     = merge_tabla(df, "ree.Emisiones", ["Fecha", "Tipo"], ["Valor"])
+    elapsed     = cargar_tabla(df, "ree.Emisiones", ["Fecha", "Tipo"])
     print(f"{len(df):,} filas procesadas | {elapsed}s")
 
 # 8 — Precios
@@ -294,12 +250,12 @@ for item in datos:
         })
 
 if not registros:
-    print(f"ADVERTENCIA: API devolvió 0 registros para el rango {start_str} → {end_str}")
+    print(f"ADVERTENCIA: API devolvió 0 registros para {start_str} → {end_str}")
 else:
     df          = pd.DataFrame(registros)
     df["Fecha"] = pd.to_datetime(df["Fecha"]).dt.date
     df["Hora"]  = pd.to_datetime(df["Hora"], format = "%H:%M:%S").dt.time
-    elapsed     = merge_tabla(df, "ree.Precios", ["Fecha", "Hora", "Zona", "Tipo"], ["Valor_eur_mwh"])
+    elapsed     = cargar_tabla(df, "ree.Precios", ["Fecha", "Hora", "Zona", "Tipo"])
     print(f"{len(df):,} filas procesadas | {elapsed}s")
 
 # 9 — Intercambios
@@ -334,11 +290,11 @@ for pais_item in datos:
             })
 
 if not registros:
-    print(f"ADVERTENCIA: API devolvió 0 registros para el rango {start_str} → {end_str}")
+    print(f"ADVERTENCIA: API devolvió 0 registros para {start_str} → {end_str}")
 else:
     df          = pd.DataFrame(registros)
     df["Fecha"] = pd.to_datetime(df["Fecha"]).dt.date
-    elapsed     = merge_tabla(df, "ree.Intercambios", ["Fecha", "Pais", "Tipo"], ["Valor_mwh"])
+    elapsed     = cargar_tabla(df, "ree.Intercambios", ["Fecha", "Pais", "Tipo"])
     print(f"{len(df):,} filas procesadas | {elapsed}s")
 
 # 10 — Resumen
