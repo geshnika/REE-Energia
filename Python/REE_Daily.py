@@ -87,31 +87,30 @@ def verificar_api(url, params):
     return response.json()
 
 def cargar_tabla(df, tabla, claves):
-    """
-    DELETE del rango de fechas del DataFrame + INSERT de todas las filas.
-    Sin MERGE, sin tablas temporales, sin conflicto con IDENTITY.
-    """
     if df.empty:
         print("  Sin filas para procesar.")
         return 0.0
 
-    start    = time.time()
+    start     = time.time()
+    schema    = tabla.split(".")[0]
+    base      = tabla.split(".")[1]
+    all_cols  = list(df.columns)
     fecha_min = str(df["Fecha"].min())
     fecha_max = str(df["Fecha"].max())
 
+    col_list     = ", ".join([f"[{c}]" for c in all_cols])
+    placeholders = ", ".join(["?" for _ in all_cols])
+    insert_sql   = f"INSERT INTO [{schema}].[{base}] ({col_list}) VALUES ({placeholders})"
+    rows         = [tuple(r) for r in df.itertuples(index=False, name=None)]
+
     with engine.begin() as conn:
         conn.execute(text(f"""
-            DELETE FROM {tabla}
+            DELETE FROM [{schema}].[{base}]
             WHERE Fecha BETWEEN :ini AND :fin
         """), {"ini": fecha_min, "fin": fecha_max})
 
-        df.to_sql(
-            tabla.split(".")[1],
-            con       = conn,
-            schema    = tabla.split(".")[0],
-            if_exists = "append",
-            index     = False
-        )
+        raw = conn.connection.cursor()
+        raw.executemany(insert_sql, rows)
 
     return round(time.time() - start, 2)
 
