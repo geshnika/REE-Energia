@@ -56,7 +56,7 @@ for intento in range(3):
 hoy = datetime.now().date()
 
 with engine.connect() as conn:
-    result      = conn.execute(text("SELECT MAX(Fecha) FROM ree.Generacion"))
+    result       = conn.execute(text("SELECT MAX(Fecha) FROM ree.Generacion"))
     ultima_fecha = result.scalar()
 
 if ultima_fecha is None:
@@ -87,28 +87,51 @@ def verificar_api(url, params):
 
 def merge_tabla(df, tabla, claves, columnas):
     """
-    Hace MERGE contra la tabla destino:
+    Inserta/actualiza usando una única conexión persistente:
+    - Crea tabla temporal #tmp dentro de la misma transacción
+    - Ejecuta MERGE contra la tabla destino
     - INSERT si la fila no existe
     - UPDATE si existe y cambió algún valor (dispara trigger → Historico)
     - Ignora si existe y no cambió
     """
     if df.empty:
+        print("  Sin filas para procesar.")
         return 0.0
 
-    start    = time.time()
-    tmp_name = f"##tmp_{tabla.replace('.', '_')}"
+    start      = time.time()
+    tmp_name   = "#tmp_merge"
+    schema     = tabla.split(".")[0]
+    base_tabla = tabla.split(".")[1]
+    all_cols   = claves + columnas
 
-    df.to_sql(tmp_name, con = engine, if_exists = "replace", index = False)
+    # Mapeo de tipos pandas → SQL Server
+    tipo_sql = {
+        "object"  : "NVARCHAR(200)",
+        "float64" : "FLOAT",
+        "int64"   : "INT",
+        "bool"    : "BIT"
+    }
 
-    on_clause    = " AND ".join([f"T.{c} = S.{c}" for c in claves])
-    match_clause = " OR ".join([f"T.{c} <> S.{c}" for c in columnas])
-    set_clause   = ", ".join([f"T.{c} = S.{c}" for c in columnas])
-    all_cols     = claves + columnas
-    insert_cols  = ", ".join(all_cols)
-    insert_vals  = ", ".join([f"S.{c}" for c in all_cols])
+    col_defs = []
+    for col in all_cols:
+        dtype    = str(df[col].dtype)
+        sql_type = tipo_sql.get(dtype, "NVARCHAR(200)")
+        if col == "Fecha":
+            sql_type = "DATE"
+        elif col == "Hora":
+            sql_type = "TIME"
+        col_defs.append(f"[{col}] {sql_type}")
+
+    create_tmp = f"CREATE TABLE {tmp_name} ({', '.join(col_defs)})"
+
+    on_clause    = " AND ".join([f"T.[{c}] = S.[{c}]" for c in claves])
+    match_clause = " OR ".join([f"T.[{c}] <> S.[{c}]" for c in columnas])
+    set_clause   = ", ".join([f"T.[{c}] = S.[{c}]" for c in columnas])
+    insert_cols  = ", ".join([f"[{c}]" for c in all_cols])
+    insert_vals  = ", ".join([f"S.[{c}]" for c in all_cols])
 
     merge_sql = f"""
-        MERGE {tabla} AS T
+        MERGE [{schema}].[{base_tabla}] AS T
         USING {tmp_name} AS S
         ON {on_clause}
         WHEN MATCHED AND ({match_clause})
@@ -117,9 +140,21 @@ def merge_tabla(df, tabla, claves, columnas):
             THEN INSERT ({insert_cols}) VALUES ({insert_vals});
     """
 
-    with engine.connect() as conn:
+    # Todo dentro de la misma conexión para que #tmp sea visible
+    with engine.begin() as conn:
+        conn.execute(text(f"IF OBJECT_ID('tempdb..{tmp_name}') IS NOT NULL DROP TABLE {tmp_name}"))
+        conn.execute(text(create_tmp))
+
+        # Insertar filas en lote con executemany via cursor nativo
+        rows         = [tuple(row) for row in df[all_cols].itertuples(index=False, name=None)]
+        col_list     = ", ".join([f"[{c}]" for c in all_cols])
+        placeholders = ", ".join(["?" for _ in all_cols])
+        insert_tmp   = f"INSERT INTO {tmp_name} ({col_list}) VALUES ({placeholders})"
+
+        raw_cursor = conn.connection.cursor()
+        raw_cursor.executemany(insert_tmp, rows)
+
         conn.execute(text(merge_sql))
-        conn.commit()
 
     return round(time.time() - start, 2)
 
