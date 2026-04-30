@@ -66,8 +66,7 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git fetch origin main
-          git reset --soft origin/main
+          git pull --rebase origin main
           git add README.md RESULTS.md
           git diff --staged --quiet || git commit -m "docs: update Data Coverage table"
           git push origin main
