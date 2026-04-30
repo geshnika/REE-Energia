@@ -168,4 +168,6 @@ Built with Power BI using data directly from Azure SQL.
 
 ## Author
 
-Juan Pablo Riesgo — [linkedin.com/in/riesgo-juan-pablo](https://linkedin.com/in/riesgo-juan-pablo)
+**Juan Pablo Riesgo**  
+Data Analyst | Madrid, Spain  
+[LinkedIn](https://www.linkedin.com/in/riesgo-juan-pablo/)
