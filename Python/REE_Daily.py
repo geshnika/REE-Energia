@@ -2,16 +2,14 @@
 
 import os
 import time
-import calendar
 import requests
 import pandas as pd
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, date
 from sqlalchemy import create_engine, text
 from dotenv import load_dotenv
 
-# 2. Conexiones
+# 2 — Conexión
 
-# ── Cargar variables de entorno ──────────────────────────────
 load_dotenv()
 
 DB_SERVER   = os.getenv("DB_SERVER")
@@ -37,7 +35,6 @@ def crear_engine():
         connect_args = {"timeout": 180}
     )
 
-# Reintentar hasta 3 veces con 30 segundos entre intentos
 for intento in range(3):
     try:
         start  = time.time()
@@ -54,19 +51,33 @@ for intento in range(3):
         else:
             raise
 
-# ── Rango de fechas ───────────────────────────────────────────
-hoy  = datetime.now().date()
-ayer = hoy - timedelta(days = 1)
+# 3 — Rango dinámico desde SQL
 
-start_str = f"{ayer}T00:00"
-end_str   = f"{hoy}T23:59"
+hoy = datetime.now().date()
 
-print(f"Rango: {ayer} → {hoy}")
+with engine.connect() as conn:
+    result      = conn.execute(text("SELECT MAX(Fecha) FROM ree.Generacion"))
+    ultima_fecha = result.scalar()
 
-# 3 — Funciones auxiliares
+if ultima_fecha is None:
+    desde = date(2014, 1, 1)
+else:
+    desde = ultima_fecha + timedelta(days=1)
+
+hasta = hoy
+
+if desde > hasta:
+    print(f"Base de datos al día (última fecha: {ultima_fecha}). Nada que cargar.")
+    exit()
+
+start_str = f"{desde}T00:00"
+end_str   = f"{hasta}T23:59"
+
+print(f"Rango: {desde} → {hasta} ({(hasta - desde).days + 1} día/s)")
+
+# 4 — Funciones auxiliares
 
 def verificar_api(url, params):
-    """ Verifica que el endpoint responde correctamente """
     response = requests.get(url, headers = {"Accept": "application/json"}, params = params)
     if response.status_code != 200:
         raise ConnectionError(f"API respondió con status {response.status_code}")
@@ -81,26 +92,20 @@ def merge_tabla(df, tabla, claves, columnas):
     - UPDATE si existe y cambió algún valor (dispara trigger → Historico)
     - Ignora si existe y no cambió
     """
-    start = time.time()
+    if df.empty:
+        return 0.0
 
-    # Crear tabla temporal con los datos nuevos
-    df.to_sql(f"##tmp_{tabla.replace('.', '_')}", con = engine, if_exists = "replace", index = False)
-
-    # Construir condición ON
-    on_clause      = " AND ".join([f"T.{c} = S.{c}" for c in claves])
-
-    # Construir condición WHEN MATCHED (solo actualiza si cambió algo)
-    match_clause   = " OR ".join([f"T.{c} <> S.{c}" for c in columnas])
-
-    # Construir SET
-    set_clause     = ", ".join([f"T.{c} = S.{c}" for c in columnas])
-
-    # Construir INSERT
-    all_cols       = claves + columnas
-    insert_cols    = ", ".join(all_cols)
-    insert_vals    = ", ".join([f"S.{c}" for c in all_cols])
-
+    start    = time.time()
     tmp_name = f"##tmp_{tabla.replace('.', '_')}"
+
+    df.to_sql(tmp_name, con = engine, if_exists = "replace", index = False)
+
+    on_clause    = " AND ".join([f"T.{c} = S.{c}" for c in claves])
+    match_clause = " OR ".join([f"T.{c} <> S.{c}" for c in columnas])
+    set_clause   = ", ".join([f"T.{c} = S.{c}" for c in columnas])
+    all_cols     = claves + columnas
+    insert_cols  = ", ".join(all_cols)
+    insert_vals  = ", ".join([f"S.{c}" for c in all_cols])
 
     merge_sql = f"""
         MERGE {tabla} AS T
@@ -116,18 +121,16 @@ def merge_tabla(df, tabla, claves, columnas):
         conn.execute(text(merge_sql))
         conn.commit()
 
-    elapsed = round(time.time() - start, 2)
-    return elapsed
+    return round(time.time() - start, 2)
 
-# 4 — Generacion
+# 5 — Generacion
 
 print("=" * 60)
 print("GENERACION")
 print("=" * 60)
 
-start_tabla = time.time()
-url         = "https://apidatos.ree.es/es/datos/generacion/estructura-generacion"
-params      = {
+url    = "https://apidatos.ree.es/es/datos/generacion/estructura-generacion"
+params = {
     "start_date" : start_str,
     "end_date"   : end_str,
     "time_trunc" : "day",
@@ -148,27 +151,22 @@ for fuente in datos:
             "Porcentaje" : punto["percentage"]
         })
 
-df          = pd.DataFrame(registros)
-df["Fecha"] = pd.to_datetime(df["Fecha"]).dt.date
+if not registros:
+    print(f"ADVERTENCIA: API devolvió 0 registros para el rango {start_str} → {end_str}")
+else:
+    df          = pd.DataFrame(registros)
+    df["Fecha"] = pd.to_datetime(df["Fecha"]).dt.date
+    elapsed     = merge_tabla(df, "ree.Generacion", ["Fecha", "Fuente"], ["Valor_mwh", "Porcentaje"])
+    print(f"{len(df):,} filas procesadas | {elapsed}s")
 
-elapsed = merge_tabla(
-    df       = df,
-    tabla    = "ree.Generacion",
-    claves   = ["Fecha", "Fuente"],
-    columnas = ["Valor_mwh", "Porcentaje"]
-)
-
-print(f"{len(df):,} filas procesadas | {elapsed}s")
-
-# 5 — Demanda
+# 6 — Demanda
 
 print("=" * 60)
 print("DEMANDA")
 print("=" * 60)
 
-start_tabla = time.time()
-url         = "https://apidatos.ree.es/es/datos/demanda/evolucion"
-params      = {
+url    = "https://apidatos.ree.es/es/datos/demanda/evolucion"
+params = {
     "start_date" : start_str,
     "end_date"   : end_str,
     "time_trunc" : "day",
@@ -188,19 +186,15 @@ for item in datos:
             "Valor_mwh" : punto["value"]
         })
 
-df          = pd.DataFrame(registros)
-df["Fecha"] = pd.to_datetime(df["Fecha"]).dt.date
+if not registros:
+    print(f"ADVERTENCIA: API devolvió 0 registros para el rango {start_str} → {end_str}")
+else:
+    df          = pd.DataFrame(registros)
+    df["Fecha"] = pd.to_datetime(df["Fecha"]).dt.date
+    elapsed     = merge_tabla(df, "ree.Demanda", ["Fecha", "Tipo"], ["Valor_mwh"])
+    print(f"{len(df):,} filas procesadas | {elapsed}s")
 
-elapsed = merge_tabla(
-    df       = df,
-    tabla    = "ree.Demanda",
-    claves   = ["Fecha", "Tipo"],
-    columnas = ["Valor_mwh"]
-)
-
-print(f"{len(df):,} filas procesadas | {elapsed}s")
-
-# 6 — Emisiones
+# 7 — Emisiones
 
 print("=" * 60)
 print("EMISIONES")
@@ -227,19 +221,15 @@ for item in datos:
             "Valor" : punto["value"]
         })
 
-df          = pd.DataFrame(registros)
-df["Fecha"] = pd.to_datetime(df["Fecha"]).dt.date
+if not registros:
+    print(f"ADVERTENCIA: API devolvió 0 registros para el rango {start_str} → {end_str}")
+else:
+    df          = pd.DataFrame(registros)
+    df["Fecha"] = pd.to_datetime(df["Fecha"]).dt.date
+    elapsed     = merge_tabla(df, "ree.Emisiones", ["Fecha", "Tipo"], ["Valor"])
+    print(f"{len(df):,} filas procesadas | {elapsed}s")
 
-elapsed = merge_tabla(
-    df       = df,
-    tabla    = "ree.Emisiones",
-    claves   = ["Fecha", "Tipo"],
-    columnas = ["Valor"]
-)
-
-print(f"{len(df):,} filas procesadas | {elapsed}s")
-
-# 7 — Precios
+# 8 — Precios
 
 print("=" * 60)
 print("PRECIOS")
@@ -268,20 +258,16 @@ for item in datos:
             "Valor_eur_mwh" : punto["value"]
         })
 
-df          = pd.DataFrame(registros)
-df["Fecha"] = pd.to_datetime(df["Fecha"]).dt.date
-df["Hora"]  = pd.to_datetime(df["Hora"], format = "%H:%M:%S").dt.time
+if not registros:
+    print(f"ADVERTENCIA: API devolvió 0 registros para el rango {start_str} → {end_str}")
+else:
+    df          = pd.DataFrame(registros)
+    df["Fecha"] = pd.to_datetime(df["Fecha"]).dt.date
+    df["Hora"]  = pd.to_datetime(df["Hora"], format = "%H:%M:%S").dt.time
+    elapsed     = merge_tabla(df, "ree.Precios", ["Fecha", "Hora", "Zona", "Tipo"], ["Valor_eur_mwh"])
+    print(f"{len(df):,} filas procesadas | {elapsed}s")
 
-elapsed = merge_tabla(
-    df       = df,
-    tabla    = "ree.Precios",
-    claves   = ["Fecha", "Hora", "Zona", "Tipo"],
-    columnas = ["Valor_eur_mwh"]
-)
-
-print(f"{len(df):,} filas procesadas | {elapsed}s")
-
-# 8 — Intercambios
+# 9 — Intercambios
 
 print("=" * 60)
 print("INTERCAMBIOS")
@@ -312,19 +298,15 @@ for pais_item in datos:
                 "Valor_mwh" : punto["value"]
             })
 
-df          = pd.DataFrame(registros)
-df["Fecha"] = pd.to_datetime(df["Fecha"]).dt.date
+if not registros:
+    print(f"ADVERTENCIA: API devolvió 0 registros para el rango {start_str} → {end_str}")
+else:
+    df          = pd.DataFrame(registros)
+    df["Fecha"] = pd.to_datetime(df["Fecha"]).dt.date
+    elapsed     = merge_tabla(df, "ree.Intercambios", ["Fecha", "Pais", "Tipo"], ["Valor_mwh"])
+    print(f"{len(df):,} filas procesadas | {elapsed}s")
 
-elapsed = merge_tabla(
-    df       = df,
-    tabla    = "ree.Intercambios",
-    claves   = ["Fecha", "Pais", "Tipo"],
-    columnas = ["Valor_mwh"]
-)
-
-print(f"{len(df):,} filas procesadas | {elapsed}s")
-
-# 9 — Resumen
+# 10 — Resumen
 
 print("=" * 60)
 print("RESUMEN DAILY")
@@ -335,7 +317,7 @@ start = time.time()
 with engine.connect() as conn:
     resultado  = conn.execute(text("""
         SELECT
-            'Generacion' AS Tabla
+             'Generacion' AS Tabla
             ,COUNT(*) AS Filas
             ,MIN(Fecha) AS Desde
             ,MAX(Fecha) AS Hasta
