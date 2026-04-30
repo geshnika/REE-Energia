@@ -56,7 +56,7 @@ for intento in range(3):
 hoy = datetime.now().date()
 
 with engine.connect() as conn:
-    result      = conn.execute(text("SELECT MAX(Fecha) FROM ree.Generacion"))
+    result       = conn.execute(text("SELECT MAX(Fecha) FROM ree.Generacion"))
     ultima_fecha = result.scalar()
 
 if ultima_fecha is None:
@@ -85,41 +85,32 @@ def verificar_api(url, params):
         raise ValueError("API respondió con cuerpo vacío")
     return response.json()
 
-def merge_tabla(df, tabla, claves, columnas):
+def cargar_tabla(df, tabla, claves):
     """
-    Hace MERGE contra la tabla destino:
-    - INSERT si la fila no existe
-    - UPDATE si existe y cambió algún valor (dispara trigger → Historico)
-    - Ignora si existe y no cambió
+    DELETE del rango de fechas del DataFrame + INSERT de todas las filas.
+    Sin MERGE, sin tablas temporales, sin conflicto con IDENTITY.
     """
     if df.empty:
+        print("  Sin filas para procesar.")
         return 0.0
 
     start    = time.time()
-    tmp_name = f"##tmp_{tabla.replace('.', '_')}"
+    fecha_min = str(df["Fecha"].min())
+    fecha_max = str(df["Fecha"].max())
 
-    df.to_sql(tmp_name, con = engine, if_exists = "replace", index = False)
+    with engine.begin() as conn:
+        conn.execute(text(f"""
+            DELETE FROM {tabla}
+            WHERE Fecha BETWEEN :ini AND :fin
+        """), {"ini": fecha_min, "fin": fecha_max})
 
-    on_clause    = " AND ".join([f"T.{c} = S.{c}" for c in claves])
-    match_clause = " OR ".join([f"T.{c} <> S.{c}" for c in columnas])
-    set_clause   = ", ".join([f"T.{c} = S.{c}" for c in columnas])
-    all_cols     = claves + columnas
-    insert_cols  = ", ".join(all_cols)
-    insert_vals  = ", ".join([f"S.{c}" for c in all_cols])
-
-    merge_sql = f"""
-        MERGE {tabla} AS T
-        USING {tmp_name} AS S
-        ON {on_clause}
-        WHEN MATCHED AND ({match_clause})
-            THEN UPDATE SET {set_clause}
-        WHEN NOT MATCHED
-            THEN INSERT ({insert_cols}) VALUES ({insert_vals});
-    """
-
-    with engine.connect() as conn:
-        conn.execute(text(merge_sql))
-        conn.commit()
+        df.to_sql(
+            tabla.split(".")[1],
+            con       = conn,
+            schema    = tabla.split(".")[0],
+            if_exists = "append",
+            index     = False
+        )
 
     return round(time.time() - start, 2)
 
@@ -152,11 +143,11 @@ for fuente in datos:
         })
 
 if not registros:
-    print(f"ADVERTENCIA: API devolvió 0 registros para el rango {start_str} → {end_str}")
+    print(f"ADVERTENCIA: API devolvió 0 registros para {start_str} → {end_str}")
 else:
     df          = pd.DataFrame(registros)
     df["Fecha"] = pd.to_datetime(df["Fecha"]).dt.date
-    elapsed     = merge_tabla(df, "ree.Generacion", ["Fecha", "Fuente"], ["Valor_mwh", "Porcentaje"])
+    elapsed     = cargar_tabla(df, "ree.Generacion", ["Fecha", "Fuente"])
     print(f"{len(df):,} filas procesadas | {elapsed}s")
 
 # 6 — Demanda
@@ -187,11 +178,11 @@ for item in datos:
         })
 
 if not registros:
-    print(f"ADVERTENCIA: API devolvió 0 registros para el rango {start_str} → {end_str}")
+    print(f"ADVERTENCIA: API devolvió 0 registros para {start_str} → {end_str}")
 else:
     df          = pd.DataFrame(registros)
     df["Fecha"] = pd.to_datetime(df["Fecha"]).dt.date
-    elapsed     = merge_tabla(df, "ree.Demanda", ["Fecha", "Tipo"], ["Valor_mwh"])
+    elapsed     = cargar_tabla(df, "ree.Demanda", ["Fecha", "Tipo"])
     print(f"{len(df):,} filas procesadas | {elapsed}s")
 
 # 7 — Emisiones
@@ -222,11 +213,11 @@ for item in datos:
         })
 
 if not registros:
-    print(f"ADVERTENCIA: API devolvió 0 registros para el rango {start_str} → {end_str}")
+    print(f"ADVERTENCIA: API devolvió 0 registros para {start_str} → {end_str}")
 else:
     df          = pd.DataFrame(registros)
     df["Fecha"] = pd.to_datetime(df["Fecha"]).dt.date
-    elapsed     = merge_tabla(df, "ree.Emisiones", ["Fecha", "Tipo"], ["Valor"])
+    elapsed     = cargar_tabla(df, "ree.Emisiones", ["Fecha", "Tipo"])
     print(f"{len(df):,} filas procesadas | {elapsed}s")
 
 # 8 — Precios
@@ -259,12 +250,12 @@ for item in datos:
         })
 
 if not registros:
-    print(f"ADVERTENCIA: API devolvió 0 registros para el rango {start_str} → {end_str}")
+    print(f"ADVERTENCIA: API devolvió 0 registros para {start_str} → {end_str}")
 else:
     df          = pd.DataFrame(registros)
     df["Fecha"] = pd.to_datetime(df["Fecha"]).dt.date
     df["Hora"]  = pd.to_datetime(df["Hora"], format = "%H:%M:%S").dt.time
-    elapsed     = merge_tabla(df, "ree.Precios", ["Fecha", "Hora", "Zona", "Tipo"], ["Valor_eur_mwh"])
+    elapsed     = cargar_tabla(df, "ree.Precios", ["Fecha", "Hora", "Zona", "Tipo"])
     print(f"{len(df):,} filas procesadas | {elapsed}s")
 
 # 9 — Intercambios
@@ -299,11 +290,11 @@ for pais_item in datos:
             })
 
 if not registros:
-    print(f"ADVERTENCIA: API devolvió 0 registros para el rango {start_str} → {end_str}")
+    print(f"ADVERTENCIA: API devolvió 0 registros para {start_str} → {end_str}")
 else:
     df          = pd.DataFrame(registros)
     df["Fecha"] = pd.to_datetime(df["Fecha"]).dt.date
-    elapsed     = merge_tabla(df, "ree.Intercambios", ["Fecha", "Pais", "Tipo"], ["Valor_mwh"])
+    elapsed     = cargar_tabla(df, "ree.Intercambios", ["Fecha", "Pais", "Tipo"])
     print(f"{len(df):,} filas procesadas | {elapsed}s")
 
 # 10 — Resumen

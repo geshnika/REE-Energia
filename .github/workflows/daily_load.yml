@@ -66,7 +66,9 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
+          git stash
           git pull --rebase origin main
+          git stash pop
           git add README.md RESULTS.md
           git diff --staged --quiet || git commit -m "docs: update Data Coverage table"
           git push origin main
