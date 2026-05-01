@@ -11,7 +11,7 @@ load_dotenv()
 engine = create_engine(
     f"mssql+pyodbc://{os.getenv('DB_USER')}:{os.getenv('DB_PASSWORD')}"
     f"@{os.getenv('DB_SERVER')}/{os.getenv('DB_NAME')}"
-    "?driver=ODBC+Driver+17+for+SQL+Server"
+    "?driver=ODBC+Driver+18+for+SQL+Server&TrustServerCertificate=yes"
 )
 
 # ── Consulta: resumen de tablas (con reintentos) ─────────────
