@@ -1,6 +1,6 @@
 # Results — Spanish Electrical System
 
-_Last updated: 2026-05-21 09:37 UTC_
+_Last updated: 2026-05-22 08:59 UTC_
 
 ---
 
@@ -27,7 +27,7 @@ Spain produces an average of **248 million** MWh per year and has demanded, sinc
 
 Renewable energy generation has grown steadily since 2014, rising from **42.8%** to **62.9%**.
 
-Today, renewables are the leading source of both generation and consumption in the country. As renewable output grows, so does its share of demand — not because consumption has increased, but because fossil and nuclear sources are being replaced. Renewables now account for **62.9%** of generation and **68.3%** of consumption, having replaced **Nuclear** with **Eólica** as the country's top energy source.
+Today, renewables are the leading source of both generation and consumption in the country. As renewable output grows, so does its share of demand — not because consumption has increased, but because fossil and nuclear sources are being replaced. Renewables now account for **62.9%** of generation and **68.4%** of consumption, having replaced **Nuclear** with **Eólica** as the country's top energy source.
 
 ---
 
@@ -35,7 +35,7 @@ Today, renewables are the leading source of both generation and consumption in t
 
 | Id | Year | RenewableGeneration (MWh) | TotalGeneration (MWh) | PctRenewable | TotalConsumption (MWh) | PctRenewableConsumption | PctConsumption | TopSource | TopSourceMWh | TopRenewable | TopRenewableMWh | TopExporter | TopImporter |
 |---|---|---|---|---|---|---|---|---|---|---|---|---|---|
-| 13 | 2026 | 62,926,254.65 | 100,085,648.95 | 62.87% | 92,061,530.26 | 68.35% | 91.98% | Eólica | 25,345,595.71 | Eólica | 25,345,595.71 | Francia | Francia |
+| 13 | 2026 | 63,396,092.80 | 100,827,524.35 | 62.88% | 92,701,071.56 | 68.39% | 91.94% | Eólica | 25,457,849.81 | Eólica | 25,457,849.81 | Francia | Francia |
 | 12 | 2025 | 148,448,356.95 | 257,991,280.00 | 57.54% | 240,341,476.11 | 61.77% | 93.16% | Eólica | 57,411,466.43 | Eólica | 57,411,466.43 | Portugal | Francia |
 | 11 | 2024 | 146,597,192.04 | 248,642,883.04 | 58.96% | 233,628,202.42 | 62.75% | 93.96% | Eólica | 59,503,767.30 | Eólica | 59,503,767.30 | Portugal | Francia |
 | 10 | 2023 | 132,811,481.76 | 249,750,271.53 | 53.18% | 231,377,007.54 | 57.40% | 92.64% | Eólica | 61,343,631.03 | Eólica | 61,343,631.03 | Portugal | Francia |
@@ -61,7 +61,7 @@ In terms of pricing, the market is evaluated at both micro and macro levels (hou
 - An exceptional drought that severely reduced hydroelectric generation
 - Post-COVID demand recovering at full force
 
-Today, average prices stand at **27.2%** of that peak, though they still represent **147.2%** of what electricity cost in 2014 (excluding wage growth or inflation adjustments).
+Today, average prices stand at **27.2%** of that peak, though they still represent **147.3%** of what electricity cost in 2014 (excluding wage growth or inflation adjustments).
 
 However, while average prices have come down, maximum prices remain historically high — sitting at **64.0%** of their 2022 peak and **420.6%** above 2014 levels, suggesting that price volatility has not returned to pre-crisis norms.
 
@@ -71,7 +71,7 @@ However, while average prices have come down, maximum prices remain historically
 
 | Id | Year | PriceType | Jan | Feb | Mar | Apr | May | Jun | Jul | Aug | Sep | Oct | Nov | Dec | Total |
 |---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
-| 39 | 2026 | AVG | 85.06 | 36.59 | 60.99 | 58.54 | 67.75 | — | — | — | — | — | — | — | 61.79 |
+| 39 | 2026 | AVG | 85.06 | 36.59 | 60.99 | 58.54 | 67.98 | — | — | — | — | — | — | — | 61.83 |
 | 38 | 2026 | MAX | 317.60 | 357.53 | 398.58 | 301.20 | 345.54 | — | — | — | — | — | — | — | 344.09 |
 | 37 | 2026 | MIN | -0.50 | -4.00 | -10.00 | -7.51 | -2.10 | — | — | — | — | — | — | — | -10.00 |
 | 36 | 2025 | AVG | 109.04 | 120.26 | 67.14 | 43.14 | 36.14 | 84.84 | 83.41 | 81.41 | 75.71 | 89.88 | 74.02 | 91.85 | 79.74 |
@@ -116,7 +116,7 @@ However, while average prices have come down, maximum prices remain historically
 
 ## Pricing — Hourly Pattern
 
-On an hourly basis, during the current year there are clear price peaks in the **18:00–21:59** window. At their highest, peak prices reach **199.8%** of valley lows. Even at average levels, the gap remains significant — peak hours average **303.4%** above the cheapest valley window (**14:00–17:59**), reflecting a structural pattern in daily electricity demand.
+On an hourly basis, during the current year there are clear price peaks in the **18:00–21:59** window. At their highest, peak prices reach **199.8%** of valley lows. Even at average levels, the gap remains significant — peak hours average **304.7%** above the cheapest valley window (**14:00–17:59**), reflecting a structural pattern in daily electricity demand.
 
 ---
 
@@ -126,7 +126,7 @@ On an hourly basis, during the current year there are clear price peaks in the *
 |---|---|---|---|---|---|---|---|---|
 | 39 | 2026 | MIN | -0.42 | -2.10 | -7.00 | -10.00 | -2.10 | 0.01 |
 | 38 | 2026 | MAX | 217.50 | 240.58 | 242.95 | 199.44 | 398.58 | 245.26 |
-| 37 | 2026 | AVG | 62.25 | 65.27 | 40.95 | 32.58 | 98.86 | 84.03 |
+| 37 | 2026 | AVG | 62.53 | 65.25 | 40.85 | 32.44 | 98.83 | 84.38 |
 | 36 | 2025 | MIN | 0.00 | -1.54 | -15.00 | -15.00 | -5.80 | 5.00 |
 | 35 | 2025 | MAX | 236.50 | 423.15 | 268.61 | 272.86 | 372.35 | 243.09 |
 | 34 | 2025 | AVG | 81.87 | 86.92 | 54.76 | 47.10 | 115.29 | 105.53 |
@@ -177,11 +177,11 @@ Spain is a **net energy exporter**, with a total net export balance of **27.0 mi
 
 | Id | Country | Export (MWh) | Import (MWh) | Balance (MWh) |
 |---|---|---|---|---|
-| 0 | Total | -246,496,099.53 | 219,544,518.58 | -26,951,580.94 |
-| 1 | Portugal | -111,158,460.32 | 68,321,671.25 | -42,836,789.07 |
-| 2 | Marruecos | -38,884,803.60 | 2,996,602.05 | -35,888,201.55 |
-| 3 | Andorra | -3,014,219.27 | 0.00 | -3,014,219.27 |
-| 4 | Francia | -93,438,616.34 | 148,226,245.28 | 54,787,628.94 |
+| 0 | Total | -246,610,965.08 | 219,576,966.53 | -27,033,998.54 |
+| 1 | Portugal | -111,211,897.94 | 68,330,980.88 | -42,880,917.07 |
+| 2 | Marruecos | -38,903,317.05 | 2,996,602.05 | -35,906,715.00 |
+| 3 | Andorra | -3,014,576.07 | 0.00 | -3,014,576.07 |
+| 4 | Francia | -93,481,174.02 | 148,249,383.61 | 54,768,209.59 |
 
 
 ---
