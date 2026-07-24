@@ -1,6 +1,6 @@
 # Results — Spanish Electrical System
 
-_Last updated: 2026-07-23 08:26 UTC_
+_Last updated: 2026-07-24 08:24 UTC_
 
 ---
 
@@ -35,7 +35,7 @@ Today, renewables are the leading source of both generation and consumption in t
 
 | Id | Year | RenewableGeneration (MWh) | TotalGeneration (MWh) | PctRenewable | TotalConsumption (MWh) | PctRenewableConsumption | PctConsumption | TopSource | TopSourceMWh | TopRenewable | TopRenewableMWh | TopExporter | TopImporter |
 |---|---|---|---|---|---|---|---|---|---|---|---|---|---|
-| 13 | 2026 | 93,251,480.35 | 149,202,838.45 | 62.50% | 136,106,354.46 | 68.51% | 91.22% | Solar fotovoltaica | 33,770,057.10 | Solar fotovoltaica | 33,770,057.10 | Portugal | Francia |
+| 13 | 2026 | 93,769,269.05 | 150,090,165.55 | 62.48% | 136,903,191.86 | 68.49% | 91.21% | Solar fotovoltaica | 34,040,410.30 | Solar fotovoltaica | 34,040,410.30 | Portugal | Francia |
 | 12 | 2025 | 148,448,356.95 | 257,991,280.00 | 57.54% | 240,341,476.11 | 61.77% | 93.16% | Eólica | 57,411,466.43 | Eólica | 57,411,466.43 | Portugal | Francia |
 | 11 | 2024 | 146,597,192.04 | 248,642,883.04 | 58.96% | 233,628,202.42 | 62.75% | 93.96% | Eólica | 59,503,767.30 | Eólica | 59,503,767.30 | Portugal | Francia |
 | 10 | 2023 | 132,811,481.76 | 249,750,271.53 | 53.18% | 231,377,007.54 | 57.40% | 92.64% | Eólica | 61,343,631.03 | Eólica | 61,343,631.03 | Portugal | Francia |
@@ -61,7 +61,7 @@ In terms of pricing, the market is evaluated at both micro and macro levels (hou
 - An exceptional drought that severely reduced hydroelectric generation
 - Post-COVID demand recovering at full force
 
-Today, average prices stand at **31.7%** of that peak, though they still represent **171.9%** of what electricity cost in 2014 (excluding wage growth or inflation adjustments).
+Today, average prices stand at **31.8%** of that peak, though they still represent **172.1%** of what electricity cost in 2014 (excluding wage growth or inflation adjustments).
 
 However, while average prices have come down, maximum prices remain historically high — sitting at **79.8%** of their 2022 peak and **524.8%** above 2014 levels, suggesting that price volatility has not returned to pre-crisis norms.
 
@@ -71,7 +71,7 @@ However, while average prices have come down, maximum prices remain historically
 
 | Id | Year | PriceType | Jan | Feb | Mar | Apr | May | Jun | Jul | Aug | Sep | Oct | Nov | Dec | Total |
 |---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
-| 39 | 2026 | AVG | 85.06 | 36.59 | 60.99 | 58.54 | 67.63 | 81.90 | 114.37 | — | — | — | — | — | 72.15 |
+| 39 | 2026 | AVG | 85.06 | 36.59 | 60.99 | 58.54 | 67.63 | 81.90 | 114.75 | — | — | — | — | — | 72.21 |
 | 38 | 2026 | MAX | 317.60 | 357.53 | 398.58 | 301.20 | 345.54 | 891.42 | 393.19 | — | — | — | — | — | 429.29 |
 | 37 | 2026 | MIN | -0.50 | -4.00 | -10.00 | -7.51 | -3.00 | -2.10 | -1.43 | — | — | — | — | — | -10.00 |
 | 36 | 2025 | AVG | 109.04 | 120.26 | 67.14 | 43.14 | 36.14 | 84.84 | 83.41 | 81.41 | 75.71 | 89.88 | 74.02 | 91.85 | 79.74 |
@@ -116,7 +116,7 @@ However, while average prices have come down, maximum prices remain historically
 
 ## Pricing — Hourly Pattern
 
-On an hourly basis, during the current year there are clear price peaks in the **18:00–21:59** window. At their highest, peak prices reach **447.0%** of valley lows. Even at average levels, the gap remains significant — peak hours average **320.6%** above the cheapest valley window (**14:00–17:59**), reflecting a structural pattern in daily electricity demand.
+On an hourly basis, during the current year there are clear price peaks in the **18:00–21:59** window. At their highest, peak prices reach **447.0%** of valley lows. Even at average levels, the gap remains significant — peak hours average **322.3%** above the cheapest valley window (**14:00–17:59**), reflecting a structural pattern in daily electricity demand.
 
 ---
 
@@ -126,7 +126,7 @@ On an hourly basis, during the current year there are clear price peaks in the *
 |---|---|---|---|---|---|---|---|---|
 | 39 | 2026 | MIN | -0.42 | -2.10 | -7.00 | -10.00 | -2.10 | 0.01 |
 | 38 | 2026 | MAX | 217.50 | 240.58 | 242.95 | 199.44 | 891.42 | 301.07 |
-| 37 | 2026 | AVG | 80.48 | 69.95 | 41.59 | 32.48 | 104.14 | 104.26 |
+| 37 | 2026 | AVG | 80.99 | 70.41 | 41.61 | 32.36 | 104.30 | 104.71 |
 | 36 | 2025 | MIN | 0.00 | -1.54 | -15.00 | -15.00 | -5.80 | 5.00 |
 | 35 | 2025 | MAX | 236.50 | 423.15 | 268.61 | 272.86 | 372.35 | 243.09 |
 | 34 | 2025 | AVG | 81.87 | 86.92 | 54.76 | 47.10 | 115.29 | 105.53 |
@@ -169,7 +169,7 @@ On an hourly basis, during the current year there are clear price peaks in the *
 
 ## Cross-border Exchanges
 
-Spain is a **net energy exporter**, with a total net export balance of **30.5 million MWh** since 2014. Its main export destination is **Portugal**, receiving **114.8 million MWh**. France is the exception — Spain is a net importer from France, receiving **150.4 million MWh** more than it exports.
+Spain is a **net energy exporter**, with a total net export balance of **30.6 million MWh** since 2014. Its main export destination is **Portugal**, receiving **114.8 million MWh**. France is the exception — Spain is a net importer from France, receiving **150.4 million MWh** more than it exports.
 
 ---
 
@@ -177,11 +177,11 @@ Spain is a **net energy exporter**, with a total net export balance of **30.5 mi
 
 | Id | Country | Export (MWh) | Import (MWh) | Balance (MWh) |
 |---|---|---|---|---|
-| 0 | Total | -252,659,974.89 | 222,138,634.16 | -30,521,340.74 |
-| 1 | Portugal | -114,760,905.54 | 68,719,678.43 | -46,041,227.12 |
-| 2 | Marruecos | -39,862,499.03 | 2,999,958.35 | -36,862,540.68 |
-| 3 | Andorra | -3,045,152.79 | 0.00 | -3,045,152.79 |
-| 4 | Francia | -94,991,417.53 | 150,418,997.38 | 55,427,579.85 |
+| 0 | Total | -252,751,817.27 | 222,169,903.63 | -30,581,913.64 |
+| 1 | Portugal | -114,817,957.57 | 68,731,120.50 | -46,086,837.07 |
+| 2 | Marruecos | -39,880,509.03 | 2,999,958.35 | -36,880,550.68 |
+| 3 | Andorra | -3,045,454.09 | 0.00 | -3,045,454.09 |
+| 4 | Francia | -95,007,896.58 | 150,438,824.78 | 55,430,928.20 |
 
 
 ---
