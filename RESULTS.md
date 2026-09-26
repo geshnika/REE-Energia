@@ -1,6 +1,6 @@
 # Results — Spanish Electrical System
 
-_Last updated: 2026-09-25 11:08 UTC_
+_Last updated: 2026-09-26 10:49 UTC_
 
 ---
 
@@ -25,9 +25,9 @@ _Last updated: 2026-09-25 11:08 UTC_
 
 Spain produces an average of **248 million** MWh per year and has demanded, since 2022, **92.4%** of that production.
 
-Renewable energy generation has grown steadily since 2014, rising from **42.8%** to **61.3%**.
+Renewable energy generation has grown steadily since 2014, rising from **42.8%** to **61.2%**.
 
-Today, renewables are the leading source of both generation and consumption in the country. As renewable output grows, so does its share of demand — not because consumption has increased, but because fossil and nuclear sources are being replaced. Renewables now account for **61.3%** of generation and **67.5%** of consumption, having replaced **Nuclear** with **Solar fotovoltaica** as the country's top energy source.
+Today, renewables are the leading source of both generation and consumption in the country. As renewable output grows, so does its share of demand — not because consumption has increased, but because fossil and nuclear sources are being replaced. Renewables now account for **61.2%** of generation and **67.5%** of consumption, having replaced **Nuclear** with **Solar fotovoltaica** as the country's top energy source.
 
 ---
 
@@ -35,7 +35,7 @@ Today, renewables are the leading source of both generation and consumption in t
 
 | Id | Year | RenewableGeneration (MWh) | TotalGeneration (MWh) | PctRenewable | TotalConsumption (MWh) | PctRenewableConsumption | PctConsumption | TopSource | TopSourceMWh | TopRenewable | TopRenewableMWh | TopExporter | TopImporter |
 |---|---|---|---|---|---|---|---|---|---|---|---|---|---|
-| 13 | 2026 | 121,922,430.70 | 199,035,491.95 | 61.26% | 180,764,843.56 | 67.45% | 90.82% | Solar fotovoltaica | 49,250,629.99 | Solar fotovoltaica | 49,250,629.99 | Portugal | Francia |
+| 13 | 2026 | 122,332,160.80 | 199,751,307.85 | 61.24% | 181,368,873.06 | 67.45% | 90.80% | Solar fotovoltaica | 49,458,441.49 | Solar fotovoltaica | 49,458,441.49 | Portugal | Francia |
 | 12 | 2025 | 148,448,356.95 | 257,991,280.00 | 57.54% | 240,341,476.11 | 61.77% | 93.16% | Eólica | 57,411,466.43 | Eólica | 57,411,466.43 | Portugal | Francia |
 | 11 | 2024 | 146,597,192.04 | 248,642,883.04 | 58.96% | 233,628,202.42 | 62.75% | 93.96% | Eólica | 59,503,767.30 | Eólica | 59,503,767.30 | Portugal | Francia |
 | 10 | 2023 | 132,811,481.76 | 249,750,271.53 | 53.18% | 231,377,007.54 | 57.40% | 92.64% | Eólica | 61,343,631.03 | Eólica | 61,343,631.03 | Portugal | Francia |
@@ -61,7 +61,7 @@ In terms of pricing, the market is evaluated at both micro and macro levels (hou
 - An exceptional drought that severely reduced hydroelectric generation
 - Post-COVID demand recovering at full force
 
-Today, average prices stand at **38.4%** of that peak, though they still represent **208.0%** of what electricity cost in 2014 (excluding wage growth or inflation adjustments).
+Today, average prices stand at **38.4%** of that peak, though they still represent **207.8%** of what electricity cost in 2014 (excluding wage growth or inflation adjustments).
 
 However, while average prices have come down, maximum prices remain historically high — sitting at **79.1%** of their 2022 peak and **519.9%** above 2014 levels, suggesting that price volatility has not returned to pre-crisis norms.
 
@@ -71,9 +71,9 @@ However, while average prices have come down, maximum prices remain historically
 
 | Id | Year | PriceType | Jan | Feb | Mar | Apr | May | Jun | Jul | Aug | Sep | Oct | Nov | Dec | Total |
 |---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
-| 39 | 2026 | AVG | 85.06 | 36.59 | 60.99 | 58.54 | 67.63 | 81.90 | 115.86 | 127.89 | 151.05 | — | — | — | 87.28 |
+| 39 | 2026 | AVG | 85.06 | 36.59 | 60.99 | 58.54 | 67.63 | 81.90 | 115.86 | 127.89 | 150.37 | — | — | — | 87.20 |
 | 38 | 2026 | MAX | 317.60 | 357.53 | 398.58 | 301.20 | 345.54 | 891.42 | 393.19 | 391.03 | 431.34 | — | — | — | 425.27 |
-| 37 | 2026 | MIN | -0.50 | -4.00 | -10.00 | -7.51 | -3.00 | -2.10 | -2.00 | -2.10 | -10.70 | — | — | — | -10.70 |
+| 37 | 2026 | MIN | -0.50 | -4.00 | -10.00 | -7.51 | -3.00 | -2.10 | -2.00 | -2.10 | -12.63 | — | — | — | -12.63 |
 | 36 | 2025 | AVG | 109.04 | 120.26 | 67.14 | 43.14 | 36.14 | 84.84 | 83.41 | 81.41 | 75.71 | 89.88 | 74.02 | 91.85 | 79.74 |
 | 35 | 2025 | MAX | 423.15 | 372.35 | 364.82 | 319.10 | 285.73 | 355.65 | 312.62 | 315.71 | 354.29 | 356.95 | 299.56 | 298.47 | 338.20 |
 | 34 | 2025 | MIN | 0.00 | 3.52 | -5.21 | -6.01 | -15.00 | -6.01 | -1.01 | -5.00 | -0.99 | -2.64 | -0.45 | 0.50 | -15.00 |
@@ -116,7 +116,7 @@ However, while average prices have come down, maximum prices remain historically
 
 ## Pricing — Hourly Pattern
 
-On an hourly basis, during the current year there are clear price peaks in the **18:00–21:59** window. At their highest, peak prices reach **447.0%** of valley lows. Even at average levels, the gap remains significant — peak hours average **372.7%** above the cheapest valley window (**14:00–17:59**), reflecting a structural pattern in daily electricity demand.
+On an hourly basis, during the current year there are clear price peaks in the **18:00–21:59** window. At their highest, peak prices reach **447.0%** of valley lows. Even at average levels, the gap remains significant — peak hours average **374.8%** above the cheapest valley window (**14:00–17:59**), reflecting a structural pattern in daily electricity demand.
 
 ---
 
@@ -124,9 +124,9 @@ On an hourly basis, during the current year there are clear price peaks in the *
 
 | Id | Year | PriceType | 00:00-07:59 | 08:00-09:59 | 10:00-13:59 | 14:00-17:59 | 18:00-21:59 | 22:00-23:59 |
 |---|---|---|---|---|---|---|---|---|
-| 39 | 2026 | MIN | -0.42 | -2.10 | -10.02 | -10.70 | -2.10 | 0.01 |
+| 39 | 2026 | MIN | -0.42 | -2.10 | -12.35 | -12.63 | -2.10 | 0.01 |
 | 38 | 2026 | MAX | 305.11 | 333.50 | 245.27 | 199.44 | 891.42 | 315.27 |
-| 37 | 2026 | AVG | 104.74 | 90.66 | 42.74 | 33.41 | 124.53 | 127.69 |
+| 37 | 2026 | AVG | 105.05 | 90.99 | 42.63 | 33.31 | 124.85 | 127.95 |
 | 36 | 2025 | MIN | 0.00 | -1.54 | -15.00 | -15.00 | -5.80 | 5.00 |
 | 35 | 2025 | MAX | 236.50 | 423.15 | 268.61 | 272.86 | 372.35 | 243.09 |
 | 34 | 2025 | AVG | 81.87 | 86.92 | 54.76 | 47.10 | 115.29 | 105.53 |
@@ -169,7 +169,7 @@ On an hourly basis, during the current year there are clear price peaks in the *
 
 ## Cross-border Exchanges
 
-Spain is a **net energy exporter**, with a total net export balance of **34.2 million MWh** since 2014. Its main export destination is **Portugal**, receiving **118.6 million MWh**. France is the exception — Spain is a net importer from France, receiving **152.6 million MWh** more than it exports.
+Spain is a **net energy exporter**, with a total net export balance of **34.3 million MWh** since 2014. Its main export destination is **Portugal**, receiving **118.7 million MWh**. France is the exception — Spain is a net importer from France, receiving **152.6 million MWh** more than it exports.
 
 ---
 
@@ -177,11 +177,11 @@ Spain is a **net energy exporter**, with a total net export balance of **34.2 mi
 
 | Id | Country | Export (MWh) | Import (MWh) | Balance (MWh) |
 |---|---|---|---|---|
-| 0 | Total | -258,910,775.89 | 224,720,574.91 | -34,190,200.98 |
-| 1 | Portugal | -118,613,952.29 | 69,115,041.95 | -49,498,910.34 |
-| 2 | Marruecos | -40,934,972.65 | 3,000,235.85 | -37,934,736.80 |
-| 3 | Andorra | -3,097,993.64 | 0.00 | -3,097,993.64 |
-| 4 | Francia | -96,263,857.30 | 152,605,297.11 | 56,341,439.81 |
+| 0 | Total | -259,042,705.26 | 224,758,666.41 | -34,284,038.85 |
+| 1 | Portugal | -118,681,916.07 | 69,124,653.75 | -49,557,262.32 |
+| 2 | Marruecos | -40,954,772.65 | 3,000,235.85 | -37,954,536.80 |
+| 3 | Andorra | -3,098,935.04 | 0.00 | -3,098,935.04 |
+| 4 | Francia | -96,307,081.50 | 152,633,776.81 | 56,326,695.31 |
 
 
 ---
