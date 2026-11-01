@@ -142,7 +142,7 @@ Full load takes approximately 15 minutes and inserts ~330,000 rows.
 | `Precios` | 208,033 | 0 | 2014-01-01 | 2026-10-30 |
 | `Intercambios` | 45,697 | 0 | 2014-01-01 | 2026-10-30 |
 
-_Last updated: 2026-10-31 11:42 UTC_
+_Last updated: 2026-11-01 12:41 UTC_
 
 ---
 
